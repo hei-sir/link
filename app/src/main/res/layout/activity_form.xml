@@ -1,0 +1,1189 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 定义ScrollView，为里面的组件添加垂直滚动条 -->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFFE0">
+
+
+        <!-- 定义HorizontalScrollView，为里面的组件添加水平滚动条 -->
+        <HorizontalScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+
+            <!-- 先从最左边弄起,先确定一个水平面，然后最左往下垂直划分空间，确定为每天上课的节数 -->
+
+            <!-- 水平面确定 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- 最左边第一条垂直确定 -->
+                <LinearLayout
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:orientation="vertical">
+                    <!-- 划分右上至下的表格占位 -->
+                    <!--首个设为空格占位 -->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:padding="5dp"
+                        android:textColor="#00000000"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:text=" " />
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="7dp" />
+                    <!--第一节课 -->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="1" />
+                    <!--第二节课 -->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="2"
+                        />
+                    <View
+                        android:background="#f2f2f2"
+                        android:layout_width="match_parent"
+                        android:layout_height="5px"
+                        android:layout_marginLeft="26dp"
+                        android:layout_marginRight="26dp"/>
+                    <!--第三节课 -->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="3" />
+                    <!--第四节课 -->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="4" />
+                    <!--第五节课 -->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="5"
+                        />
+                    <!--第六节课 -->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="6" />
+
+                    <!--第七节课 -->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="7" />
+
+                    <!--第八节课 -->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="8" />
+                    <!--第九节课 -->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="9" />
+                    <!--第十节课 -->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="10" />
+                    <!--第十一节课 -->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="11" />
+                    <!--第十二节课 -->
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="12" />
+
+                </LinearLayout>
+                <!-- 开始确立一整个星期的布局 -->
+                <!-- 这是周一，在整个布局来说算是第二个垂直线 -->
+                <LinearLayout
+                    android:id="@+id/ll1"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#000000"
+                        android:padding="5dp"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:text="星期一" />
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp" />
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:orientation="vertical">
+                        <!--第一节课 -->
+                        <TextView
+                            android:id="@+id/Mon01"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:padding="5dp"
+                            android:textColor="#666666"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第二节课 -->
+                        <TextView
+                            android:id="@+id/Mon02"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第三节课 -->
+                        <TextView
+                            android:id="@+id/Mon03"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第四节课 -->
+                        <TextView
+                            android:id="@+id/Mon04"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第五节课 -->
+                        <TextView
+                            android:id="@+id/Mon05"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第六节课 -->
+                        <TextView
+                            android:id="@+id/Mon06"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第七节课 -->
+                        <TextView
+                            android:id="@+id/Mon07"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第八节课 -->
+                        <TextView
+                            android:id="@+id/Mon08"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第九节课 -->
+                        <TextView
+                            android:id="@+id/Mon09"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十节课 -->
+                        <TextView
+                            android:id="@+id/Mon10"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十一节课 -->
+                        <TextView
+                            android:id="@+id/Mon11"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十二节课 -->
+                        <TextView
+                            android:id="@+id/Mon12"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- 这是周二，在整个布局来说算是第三个垂直线 -->
+                <LinearLayout
+                    android:id="@+id/ll2"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#000000"
+                        android:padding="5dp"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:text="星期二" />
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp" />
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:orientation="vertical">
+                        <!--第一节课 -->
+                        <TextView
+                            android:id="@+id/Tues01"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:padding="5dp"
+                            android:textColor="#666666"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第二节课 -->
+                        <TextView
+                            android:id="@+id/Tues02"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第三节课 -->
+                        <TextView
+                            android:id="@+id/Tues03"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第四节课 -->
+                        <TextView
+                            android:id="@+id/Tues04"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第五节课 -->
+                        <TextView
+                            android:id="@+id/Tues05"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第六节课 -->
+                        <TextView
+                            android:id="@+id/Tues06"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第七节课 -->
+                        <TextView
+                            android:id="@+id/Tues07"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第八节课 -->
+                        <TextView
+                            android:id="@+id/Tues08"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第九节课 -->
+                        <TextView
+                            android:id="@+id/Tues09"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十节课 -->
+                        <TextView
+                            android:id="@+id/Tues10"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十一节课 -->
+                        <TextView
+                            android:id="@+id/Tues11"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十二节课 -->
+                        <TextView
+                            android:id="@+id/Tues12"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- 这是周三，在整个布局来说算是第四个垂直线 -->
+                <LinearLayout
+                    android:id="@+id/ll3"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#000000"
+                        android:padding="5dp"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:text="星期三" />
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp" />
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:orientation="vertical">
+                        <!--第一节课 -->
+                        <TextView
+                            android:id="@+id/Wed01"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:padding="5dp"
+                            android:textColor="#666666"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第二节课 -->
+                        <TextView
+                            android:id="@+id/Wed02"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第三节课 -->
+                        <TextView
+                            android:id="@+id/Wed03"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第四节课 -->
+                        <TextView
+                            android:id="@+id/Wed04"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第五节课 -->
+                        <TextView
+                            android:id="@+id/Wed05"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第六节课 -->
+                        <TextView
+                            android:id="@+id/Wed06"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第七节课 -->
+                        <TextView
+                            android:id="@+id/Wed07"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第八节课 -->
+                        <TextView
+                            android:id="@+id/Wed08"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第九节课 -->
+                        <TextView
+                            android:id="@+id/Wed09"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十节课 -->
+                        <TextView
+                            android:id="@+id/Wed10"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十一节课 -->
+                        <TextView
+                            android:id="@+id/Wed11"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十二节课 -->
+                        <TextView
+                            android:id="@+id/Wed12"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- 这是周四，在整个布局来说算是第五个垂直线 -->
+                <LinearLayout
+
+                    android:id="@+id/ll4"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#000000"
+                        android:padding="5dp"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:text="星期四" />
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp"
+                        />
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:orientation="vertical">
+                        <!--第一节课 -->
+                        <TextView
+                            android:id="@+id/Thur01"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:padding="5dp"
+                            android:textColor="#666666"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第二节课 -->
+                        <TextView
+                            android:id="@+id/Thur02"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第三节课 -->
+                        <TextView
+                            android:id="@+id/Thur03"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第四节课 -->
+                        <TextView
+                            android:id="@+id/Thur04"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第五节课 -->
+                        <TextView
+                            android:id="@+id/Thur05"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第六节课 -->
+                        <TextView
+                            android:id="@+id/Thur06"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第七节课 -->
+                        <TextView
+                            android:id="@+id/Thur07"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第八节课 -->
+                        <TextView
+                            android:id="@+id/Thur08"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第九节课 -->
+                        <TextView
+                            android:id="@+id/Thur09"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十节课 -->
+                        <TextView
+                            android:id="@+id/Thur10"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十一节课 -->
+                        <TextView
+                            android:id="@+id/Thur11"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十二节课 -->
+                        <TextView
+                            android:id="@+id/Thur12"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- 这是周五，在整个布局来说算是第六个垂直线 -->
+                <LinearLayout
+                    android:id="@+id/ll5"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#000000"
+                        android:padding="5dp"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:text="星期五" />
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp" />
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:orientation="vertical">
+                        <!--第一节课 -->
+                        <TextView
+                            android:id="@+id/Fri01"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:padding="5dp"
+                            android:textColor="#666666"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第二节课 -->
+                        <TextView
+                            android:id="@+id/Fri02"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第三节课 -->
+                        <TextView
+                            android:id="@+id/Fri03"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第四节课 -->
+                        <TextView
+                            android:id="@+id/Fri04"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第五节课 -->
+                        <TextView
+                            android:id="@+id/Fri05"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第六节课 -->
+                        <TextView
+                            android:id="@+id/Fri06"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第七节课 -->
+                        <TextView
+                            android:id="@+id/Fri07"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第八节课 -->
+                        <TextView
+                            android:id="@+id/Fri08"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第九节课 -->
+                        <TextView
+                            android:id="@+id/Fri09"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十节课 -->
+                        <TextView
+                            android:id="@+id/Fri10"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十一节课 -->
+                        <TextView
+                            android:id="@+id/Fri11"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十二节课 -->
+                        <TextView
+                            android:id="@+id/Fri12"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- 这是周六，在整个布局来说算是第七个垂直线 -->
+                <LinearLayout
+                    android:id="@+id/ll6"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#000000"
+                        android:padding="5dp"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:text="星期六" />
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp" />
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:orientation="vertical">
+                        <!--第一节课 -->
+                        <TextView
+                            android:id="@+id/Sat01"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:padding="5dp"
+                            android:textColor="#666666"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第二节课 -->
+                        <TextView
+                            android:id="@+id/Sat02"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第三节课 -->
+                        <TextView
+                            android:id="@+id/Sat03"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第四节课 -->
+                        <TextView
+                            android:id="@+id/Sat04"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第五节课 -->
+                        <TextView
+                            android:id="@+id/Sat05"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第六节课 -->
+                        <TextView
+                            android:id="@+id/Sat06"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第七节课 -->
+                        <TextView
+                            android:id="@+id/Sat07"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第八节课 -->
+                        <TextView
+                            android:id="@+id/Sat08"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第九节课 -->
+                        <TextView
+                            android:id="@+id/Sat09"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十节课 -->
+                        <TextView
+                            android:id="@+id/Sat10"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十一节课 -->
+                        <TextView
+                            android:id="@+id/Sat11"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十二节课 -->
+                        <TextView
+                            android:id="@+id/Sat12"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- 这是周日，在整个布局来说算是第八个垂直线 -->
+                <LinearLayout
+                    android:id="@+id/ll7"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#000000"
+                        android:padding="5dp"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:text="星期天" />
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="2dp" />
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:orientation="vertical">
+                        <!--第一节课 -->
+                        <TextView
+                            android:id="@+id/Sun01"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:padding="5dp"
+                            android:textColor="#666666"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第二节课 -->
+                        <TextView
+                            android:id="@+id/Sun02"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第三节课 -->
+                        <TextView
+                            android:id="@+id/Sun03"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第四节课 -->
+                        <TextView
+                            android:id="@+id/Sun04"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第五节课 -->
+                        <TextView
+                            android:id="@+id/Sun05"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text=""
+                            />
+                        <!--第六节课 -->
+                        <TextView
+                            android:id="@+id/Sun06"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第七节课 -->
+                        <TextView
+                            android:id="@+id/Sun07"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+
+                        <!--第八节课 -->
+                        <TextView
+                            android:id="@+id/Sun08"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第九节课 -->
+                        <TextView
+                            android:id="@+id/Sun09"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十节课 -->
+                        <TextView
+                            android:id="@+id/Sun10"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十一节课 -->
+                        <TextView
+                            android:id="@+id/Sun11"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                        <!--第十二节课 -->
+                        <TextView
+                            android:id="@+id/Sun12"
+                            android:layout_width="fill_parent"
+                            android:layout_height="50dp"
+                            android:textColor="#666666"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:text="" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </ScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fab"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        />
+</FrameLayout>

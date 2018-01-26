@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_info"
+            android:icon="@drawable/ico_sign_03"
+            android:title="个人信息" />
+        <item
+            android:id="@+id/nav_main"
+            android:icon="@drawable/ico_sign_04"
+            android:title="主页" />
+        <item
+            android:id="@+id/nav_zone"
+            android:icon="@drawable/ico_sign_05"
+            android:title="班级天地" />
+    </group>
+</menu>
