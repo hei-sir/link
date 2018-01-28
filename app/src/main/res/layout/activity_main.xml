@@ -115,6 +115,50 @@
                     android:scaleType="centerCrop"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="4dp"
+                android:foreground="?attr/selectableItemBackground">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/cardTitle3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:textSize="18sp"
+                            android:textColor="#000000"
+                            android:text="老师问答" />
+                        <ImageView
+                            android:id="@+id/cardImg3"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentRight="true"
+                            android:src="@mipmap/ic_launcher" />
+                    </RelativeLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="#000000"/>
+                    <ImageView
+                        android:id="@+id/cardContent3"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:scaleType="centerCrop"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
