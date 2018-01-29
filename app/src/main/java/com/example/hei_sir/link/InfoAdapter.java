@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Created by hei_sir on 2018/1/10.
+ * 信息栏
  */
 
 public abstract class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ViewHolder> {

@@ -78,7 +78,7 @@ public class FormActivity extends AppCompatActivity {
                     for(Form form:forms){
                         datetimes[i*j-1].setText(form.getLesson());
                     }
-                    Toast.makeText(this, "课程修改成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "课程表加载成功", Toast.LENGTH_SHORT).show();
                 }
 
             }

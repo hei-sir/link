@@ -47,10 +47,10 @@
             android:label="@string/title_activity_from_add" />
         <activity android:name=".ReportActivity">
             <intent-filter>
-            <action android:name="com.example.hei_sir.link.REPORT" />
+                <action android:name="com.example.hei_sir.link.REPORT" />
 
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.MY_REPORT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.MY_REPORT" />
             </intent-filter>
         </activity>
         <activity android:name=".HomeWorkActivity">
@@ -61,6 +61,7 @@
                 <category android:name="android.intent.category.MY_HOMEWORK" />
             </intent-filter>
         </activity>
+        <activity android:name=".QaActivity"></activity>
     </application>
 
 </manifest>

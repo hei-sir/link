@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private DrawerLayout mDrawerLayout;
-    private CardView mCardView1,mCardView2;
+    private CardView mCardView1,mCardView2,mCardView3;
     private static boolean isExit = false;
     Handler mHandler = new Handler() {
 
@@ -89,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCardView1.setOnClickListener(this);
         mCardView2=(CardView)findViewById(R.id.cardView2);
         mCardView2.setOnClickListener(this);
+        mCardView3=(CardView)findViewById(R.id.cardView3);
+        mCardView3.setOnClickListener(this);
     }
 
     @Override
@@ -100,6 +102,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.cardView2:
 
+                break;
+            case R.id.cardView3:
+                Intent intent1=new Intent(MainActivity.this,QaActivity.class);
+                startActivity(intent1);
                 break;
 
         }
