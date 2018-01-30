@@ -36,13 +36,13 @@ public class QaActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         initQas();      //初始化信息栏
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        GridLayoutManager layoutManager=new GridLayoutManager(this,1);
+        GridLayoutManager layoutManager=new GridLayoutManager(this,1);       //一行只显示一个数据
         recyclerView.setLayoutManager(layoutManager);
         adapter = new QaAdapter(qaList) {
             @Override
             public int getItemCount() {
-                return 5;
-            }
+                return 2;
+            }        //sql语句，返回查询的行数，实现数目统一
         };
         recyclerView.setAdapter(adapter);
         ActionBar actionBar = getSupportActionBar();
@@ -51,8 +51,10 @@ public class QaActivity extends AppCompatActivity {
 
     private void initQas() {               //初始化信息栏
         for (int i = 0; i < 2; i++) {
-            Qa Name = new Qa("张三","张老师",sdf.format(new Date()),R.mipmap.ic_launcher,"今天作业是什么？","");
-            qaList.add(Name);
+            Qa q1 = new Qa("张三","张老师",sdf.format(new Date()),R.mipmap.ic_launcher,"今天作业是什么？22222222222222222222222222222222222222222222222222222222222222222","");
+            qaList.add(q1);
+            Qa q2 = new Qa("李四","张老师",sdf.format(new Date()),R.mipmap.ic_launcher,"今天作业是什么？22222222222222222222222222222222222222222222222222222222222222222","");
+            qaList.add(q2);
         }
     }
 }
