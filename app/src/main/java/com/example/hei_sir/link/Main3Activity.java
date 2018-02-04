@@ -127,7 +127,7 @@ public class Main3Activity extends AppCompatActivity {
             }
             for (int i=0;i<2;i++) {
                 Info User=new Info("账户",user.getUser());
-            Info Name = new Info("姓名", userName+"  "+id);
+            Info Name = new Info("姓名", user.getName()+"  "+id);
             Info School = new Info("学校", user.getSchool());
             Info Grade = new Info("年级", user.getGrade());
             Info Class = new Info("班级", user.getClsses());

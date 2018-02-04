@@ -265,11 +265,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:text="身份选择"/>
+                android:text="账户类型选择"/>
             <Spinner
                 android:id="@+id/identity"
                 android:entries="@array/identity"
-                android:layout_marginLeft="27dp"
+                android:layout_marginLeft="1dp"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:background="@null"
