@@ -1,9 +1,11 @@
 package com.example.hei_sir.link;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +24,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.litepal.LitePal;
+import org.litepal.crud.DataSupport;
+
 
 public class EnterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,7 +43,6 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;   //记住密码
     private CheckBox rememberPass;
-
     private static boolean isExit = false;
 
     Handler mHandler = new Handler() {
@@ -54,6 +58,7 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_enter_activity);
+        LitePal.getDatabase();
         pref= PreferenceManager.getDefaultSharedPreferences(this);
         et_password=(EditText) findViewById(R.id.et_password);
         et_username=(EditText)findViewById(R.id.et_username);
@@ -131,60 +136,66 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
         currentUsername = editPerson.getText().toString().trim(); //去除空格，获取手机号
         currentPassword = editCode.getText().toString().trim();  //去除空格，获取密码
 
+        Cursor cursor= DataSupport.findBySQL("select * from User where user = ? and password = ?",currentUsername,currentPassword);
+
         if (TextUtils.isEmpty(currentUsername)) { //判断手机号是不是为空
-            Toast.makeText(this, R.string.User_name_cannot_be_empty, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
             return;
-        }
-        if (TextUtils.isEmpty(currentPassword)) {  //判断密码是不是空
-            Toast.makeText(this, R.string.Password_cannot_be_empty, Toast.LENGTH_SHORT).show();
+        }else if (TextUtils.isEmpty(currentPassword)) {  //判断密码是不是空
+            Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
             return;
-        }
-
-        editor=pref.edit();
-        String account=pref.getString("account","");
-        String password=pref.getString("password","");
-        if(rememberPass.isChecked()){
-            editor.putBoolean("remenber_password",true);
-            editor.putString("account",account);
-            editor.putString("password",password);
+        }else if(cursor.moveToFirst() == false) {
+            Toast.makeText(this,"账户或密码错误",Toast.LENGTH_SHORT).show();
+            et_username.setText("");
+            et_password.setText("");
         }else {
-            editor.clear();
-        }
-        editor.apply();
-
-        progressShow = true;
-        final ProgressDialog pd = new ProgressDialog(EnterActivity.this);  //初始化等待动画
-        /**
-         * 设置监听
-         * */
-        pd.setCanceledOnTouchOutside(false);
-        pd.setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                progressShow = false;   //设置Boolean值为false
+            editor = pref.edit();
+            String account = pref.getString("account", "");
+            String password = pref.getString("password", "");
+            if (rememberPass.isChecked()) {
+                editor.putBoolean("remenber_password", true);
+                editor.putString("account", account);
+                editor.putString("password", password);
+            } else {
+                editor.clear();
             }
-        });
-        pd.setMessage("正在登录....");  //等待动画的标题
-        pd.show();  //显示等待动画
+            editor.apply();
 
-        new Thread(new Runnable() {
-            public void run() {
-                //在此处睡眠两秒
-                try {
-                    Thread.sleep(2000);  //在此处睡眠两秒
-                } catch (InterruptedException e) {
+            progressShow = true;
+            final ProgressDialog pd = new ProgressDialog(EnterActivity.this);  //初始化等待动画
+            /**
+             * 设置监听
+             * */
+            pd.setCanceledOnTouchOutside(false);
+            pd.setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    progressShow = false;   //设置Boolean值为false
                 }
+            });
+            pd.setMessage("正在登录....");  //等待动画的标题
+            pd.show();  //显示等待动画
 
-                /**
-                 * 两秒之后
-                 * */
-                pd.dismiss();    //等待条消失
-                Intent intent = new Intent(EnterActivity.this, MainActivity.class);  //进入主界面
-                startActivity(intent);  //开始跳转
-                finish();  //finish掉此界面
-            }
-        }).start();  //开始线程
+            new Thread(new Runnable() {
+                public void run() {
+                    //在此处输入操作
+                    try {
+                        Thread.sleep(2000);  //在此处睡眠两秒
+                    } catch (InterruptedException e) {
+                    }
+
+                    /**
+                     * 两秒之后
+                     * */
+                    pd.dismiss();    //等待条消失
+                    Intent intent = new Intent(EnterActivity.this, MainActivity.class);  //进入主界面
+                    intent.putExtra("extra_data",currentUsername);
+                    startActivity(intent);  //开始跳转
+                    finish();  //finish掉此界面
+                }
+            }).start();  //开始线程
+        }
 
 
     }

@@ -61,7 +61,6 @@ public class FormActivity extends AppCompatActivity {
         Sun01=(TextView)findViewById(R.id.Sun01);Sun02=(TextView)findViewById(R.id.Sun02);Sun03=(TextView)findViewById(R.id.Sun03);Sun04=(TextView)findViewById(R.id.Sun04);
         Sun05=(TextView)findViewById(R.id.Sun05);Sun06=(TextView)findViewById(R.id.Sun06);Sun07=(TextView)findViewById(R.id.Sun07);Sun08=(TextView)findViewById(R.id.Sun08);
         Sun09=(TextView)findViewById(R.id.Sun09);Sun10=(TextView)findViewById(R.id.Sun10);Sun11=(TextView)findViewById(R.id.Sun11);Sun12=(TextView)findViewById(R.id.Sun12);           //定义TextView控件
-        LitePal.getDatabase();
         TextView[] datetimes={Mon01,Mon02,Mon03,Mon04,Mon05,Mon06,Mon07,Mon08,Mon09,Mon10,Mon11,Mon12,
                 Tues01,Tues02,Tues03,Tues04,Tues05,Tues06,Tues07,Tues08,Tues09,Tues10,Tues11,Tues12,
                 Wed01,Wed02,Wed03,Wed04,Wed05,Wed06,Wed07,Wed08,Wed09,Wed10,Wed11,Wed12,

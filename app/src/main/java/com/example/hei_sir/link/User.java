@@ -1,16 +1,46 @@
 package com.example.hei_sir.link;
 
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by hei_sir on 2018/1/18.
  */
 
-public class User {
+public class User extends DataSupport{
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private String user;
     private String password;
     private String name;
     private String school;
     private String number;
     private String identity;
+    private String grade;
+    private String clsses;
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public String getClsses() {
+        return clsses;
+    }
+
+    public void setClsses(String clsses) {
+        this.clsses = clsses;
+    }
 
     public String getUser() {
         return user;
@@ -60,13 +90,4 @@ public class User {
         this.identity = identity;
     }
 
-    public String getGradeclass() {
-        return gradeclass;
-    }
-
-    public void setGradeclass(String gradeclass) {
-        this.gradeclass = gradeclass;
-    }
-
-    private String gradeclass;
 }

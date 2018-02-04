@@ -61,7 +61,8 @@
                 <category android:name="android.intent.category.MY_HOMEWORK" />
             </intent-filter>
         </activity>
-        <activity android:name=".QaActivity"></activity>
+        <activity android:name=".QaActivity" />
+        <activity android:name=".Qa2tActivity"></activity>
     </application>
 
 </manifest>

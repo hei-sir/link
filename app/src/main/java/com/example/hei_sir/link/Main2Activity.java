@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 public class Main2Activity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
+    private static String userName;
 
     private static boolean isExit = false;
     Handler mHandler = new Handler() {
@@ -38,6 +39,8 @@ public class Main2Activity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         setSupportActionBar(toolbar);
+        final Intent intent=getIntent();
+        userName=intent.getStringExtra("extra_data");
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         swipeRefresh=(SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
@@ -62,6 +65,7 @@ public class Main2Activity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
                         Toast.makeText(Main2Activity.this, "这是个人信息", Toast.LENGTH_SHORT).show();
                         Intent intent1 = new Intent(Main2Activity.this, Main3Activity.class);  //进入主界面
+                        intent1.putExtra("extra_data",userName);
                         startActivity(intent1);  //开始跳转
                         finish();  //finish掉此界面
                         break;
@@ -69,6 +73,7 @@ public class Main2Activity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
                         Toast.makeText(Main2Activity.this, "这是主页", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Main2Activity.this, MainActivity.class);  //进入主界面
+                        intent.putExtra("extra_data",userName);
                         startActivity(intent);  //开始跳转
                         finish();  //finish掉此界面
                         break;

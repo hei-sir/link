@@ -16,12 +16,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.litepal.crud.DataSupport;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main3Activity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private List<Info> infoList=new ArrayList<>();
+    private static String userName;
 
     private static boolean isExit = false;
     Handler mHandler = new Handler() {
@@ -40,6 +43,8 @@ public class Main3Activity extends AppCompatActivity {
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         setSupportActionBar(toolbar);
+        Intent intent=getIntent();
+        userName=intent.getStringExtra("extra_data");
         mDrawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
         initInfo();      //初始化信息栏
         RecyclerView recyclerView=(RecyclerView)findViewById(R.id.recycler_view);
@@ -71,6 +76,7 @@ public class Main3Activity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
                         Toast.makeText(Main3Activity.this, "这是主页", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Main3Activity.this, MainActivity.class);  //进入主界面
+                        intent.putExtra("extra_data",userName);
                         startActivity(intent);  //开始跳转
                         finish();  //finish掉此界面
                         break;
@@ -78,6 +84,7 @@ public class Main3Activity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
                         Toast.makeText(Main3Activity.this, "这是班级天地", Toast.LENGTH_SHORT).show();
                         Intent intent1= new Intent(Main3Activity.this, Main2Activity.class);  //进入主界面
+                        intent1.putExtra("extra_data",userName);
                         startActivity(intent1);  //开始跳转
                         finish();  //finish掉此界面
 
@@ -110,17 +117,28 @@ public class Main3Activity extends AppCompatActivity {
         return true;
     }
     private void initInfo(){               //初始化信息栏
-        for (int i=0;i<2;i++){
-            Info Name=new Info("姓名","张三");
-            Info School=new Info("学校","小学");
-            Info Grade=new Info("年级","3");
-            Info Class=new Info("班级","2");
-            Info Num=new Info("学号","1632");
+        List<User> users= DataSupport.where("user = ? ",userName).find(User.class);
+        for(User user:users){
+            String id;
+            if(user.getIdentity()=="1"){
+                id="老师";
+            }else {
+                id="学生";
+            }
+            for (int i=0;i<2;i++) {
+                Info User=new Info("账户",user.getUser());
+            Info Name = new Info("姓名", userName+"  "+id);
+            Info School = new Info("学校", user.getSchool());
+            Info Grade = new Info("年级", user.getGrade());
+            Info Class = new Info("班级", user.getClsses());
+            Info Num = new Info("学号", user.getNumber());
+            infoList.add(User);
             infoList.add(Name);
             infoList.add(School);
             infoList.add(Grade);
             infoList.add(Class);
             infoList.add(Num);
+        }
         }
     }
 

@@ -1,10 +1,22 @@
 package com.example.hei_sir.link;
 
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by liuzi on 2018/1/29.
  */
 
-public class Qa {
+public class Qa extends DataSupport{
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private String sname;
     private String tname;
     private int imageId;

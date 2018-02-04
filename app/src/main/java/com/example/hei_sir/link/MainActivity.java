@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DrawerLayout mDrawerLayout;
     private CardView mCardView1,mCardView2,mCardView3;
     private static boolean isExit = false;
+    private static String userName;
+
     Handler mHandler = new Handler() {
 
         @Override
@@ -55,6 +59,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             actionBar.setHomeAsUpIndicator(R.drawable.ico_sign_01);
         }
         navView.setCheckedItem(R.id.nav_main);
+        Intent intent=getIntent();
+        userName=intent.getStringExtra("extra_data");
+        Log.d("MainActivity",userName);
+
         init();
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {          //菜单栏监听器
             @Override
@@ -65,8 +73,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mDrawerLayout.closeDrawers();                       //关闭滑动菜单
                     Toast.makeText(MainActivity.this, "这是个人信息", Toast.LENGTH_SHORT).show();
                         Intent intent1 = new Intent(MainActivity.this, Main3Activity.class);  //进入主界面
-                        startActivity(intent1);  //开始跳转
+                        intent1.putExtra("extra_data",userName);
                         finish();
+                        startActivity(intent1);  //开始跳转
                     break;
                     case R.id.nav_main:
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
@@ -76,8 +85,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
                         Toast.makeText(MainActivity.this, "这是班级天地", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, Main2Activity.class);  //进入主界面
+                        intent.putExtra("extra_data",userName);
                         startActivity(intent);  //开始跳转
-
+                        finish();
                         break;
                 }return true;
             }

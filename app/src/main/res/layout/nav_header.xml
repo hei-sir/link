@@ -10,13 +10,13 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/ico_sign_03" />
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="关于我们"
+        android:text="link"
         android:textColor="#FFF"
         android:textSize="14sp"
         android:gravity="center"

@@ -64,7 +64,6 @@ public class FromAddActivity extends AppCompatActivity implements View.OnClickLi
     public void onItemSelected(AdapterView<?> parent,View view,int position,long id){          //选择选项获得对应参数string值
         ddate=String.valueOf(dates[position]);
         dtime=String.valueOf(times[position]);
-
     }
     public void onNothingSelected(AdapterView<?> parent){
     }
@@ -81,7 +80,7 @@ public class FromAddActivity extends AppCompatActivity implements View.OnClickLi
         int s1=date.getSelectedItemPosition();
         int s2=time.getSelectedItemPosition();
         String datetime =dates[s1]+times[s2];
-        if (TextUtils.isEmpty(lession1)) {  //当手机号没有输入时
+        if (TextUtils.isEmpty(lession1)) {  //当科目没有输入时
             Toast.makeText(this, "科目不能为空！", Toast.LENGTH_SHORT).show();
             lession.requestFocus();//使输入框失去焦点
             return;

@@ -7,6 +7,16 @@ import org.litepal.crud.DataSupport;
  */
 
 public class Form extends DataSupport{
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private String classes;
     private String lesson;
     private String datetime;
