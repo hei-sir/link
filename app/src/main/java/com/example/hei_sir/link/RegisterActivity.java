@@ -27,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     Spinner identity,grades,classes;
 
-    String[] identitys={"0","1"};
+    String[] identitys={"老师","学生"};
     String[] gradeses={"1","2","3","4","5","6","7","8","9","10","11","12"};
     String[] classeses={"1","2","3","4","5","6","7","8","9","10"};
     private String uidentity,ugrades,uclasses;

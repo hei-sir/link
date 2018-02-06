@@ -1,5 +1,6 @@
 package com.example.hei_sir.link;
 
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
+import org.litepal.crud.DataSupport;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,12 +23,15 @@ public class QaActivity extends AppCompatActivity {
     private QaAdapter adapter;
     SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd");
     private SwipeRefreshLayout swipeRefresh;
+    private static String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qa);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Intent intent=getIntent();
+        userName=intent.getStringExtra("extra_data");
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         setSupportActionBar(toolbar);
         initQas();      //初始化信息栏
@@ -52,12 +58,15 @@ public class QaActivity extends AppCompatActivity {
     }
 
     private void initQas() {               //初始化信息栏
+        List<Qa> qas = DataSupport.where("tname = ? ", userName).find(Qa.class);
+        for (Qa qa : qas) {
         for (int i = 0; i < 2; i++) {
-            Qa q1 = new Qa("张三","张老师",sdf.format(new Date()),R.mipmap.ic_launcher,"今天作业是什么？22222222222222222222222222222222222222222222222222222222222222222","");
+            Qa q1 = new Qa("张三", "张老师", sdf.format(new Date()), R.mipmap.ic_launcher, "今天作业是什么？22222222222222222222222222222222222222222222222222222222222222222", "");
             qaList.add(q1);
-            Qa q2 = new Qa("李四","张老师",sdf.format(new Date()),R.mipmap.ic_launcher,"今天作业是什么？22222222222222222222222222222222222222222222222222222222222222222","");
+            Qa q2 = new Qa("李四", "张老师", sdf.format(new Date()), R.mipmap.ic_launcher, "今天作业是什么？22222222222222222222222222222222222222222222222222222222222222222", "");
             qaList.add(q2);
         }
+    }
     }
 
     private void ReflashQa(){

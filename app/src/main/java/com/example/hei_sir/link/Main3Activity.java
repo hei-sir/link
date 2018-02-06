@@ -25,6 +25,7 @@ public class Main3Activity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private List<Info> infoList=new ArrayList<>();
     private static String userName;
+    private String id;
 
     private static boolean isExit = false;
     Handler mHandler = new Handler() {
@@ -119,26 +120,20 @@ public class Main3Activity extends AppCompatActivity {
     private void initInfo(){               //初始化信息栏
         List<User> users= DataSupport.where("user = ? ",userName).find(User.class);
         for(User user:users){
-            String id;
-            if(user.getIdentity()=="1"){
-                id="老师";
-            }else {
-                id="学生";
-            }
             for (int i=0;i<2;i++) {
-                Info User=new Info("账户",user.getUser());
-            Info Name = new Info("姓名", user.getName()+"  "+id);
-            Info School = new Info("学校", user.getSchool());
-            Info Grade = new Info("年级", user.getGrade());
-            Info Class = new Info("班级", user.getClsses());
-            Info Num = new Info("学号", user.getNumber());
-            infoList.add(User);
-            infoList.add(Name);
-            infoList.add(School);
-            infoList.add(Grade);
-            infoList.add(Class);
-            infoList.add(Num);
-        }
+                Info User = new Info("账户", user.getUser());
+                Info Name = new Info("姓名", user.getName() + "  " + user.getIdentity());
+                Info School = new Info("学校", user.getSchool());
+                Info Grade = new Info("年级", user.getGrade());
+                Info Class = new Info("班级", user.getClsses());
+                Info Num = new Info("学号", user.getNumber());
+                infoList.add(User);
+                infoList.add(Name);
+                infoList.add(School);
+                infoList.add(Grade);
+                infoList.add(Class);
+                infoList.add(Num);
+            }
         }
     }
 

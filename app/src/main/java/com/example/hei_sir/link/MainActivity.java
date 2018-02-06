@@ -24,6 +24,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.litepal.crud.DataSupport;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -61,8 +63,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navView.setCheckedItem(R.id.nav_main);
         Intent intent=getIntent();
         userName=intent.getStringExtra("extra_data");
-        Log.d("MainActivity",userName);
-
         init();
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {          //菜单栏监听器
             @Override
@@ -107,15 +107,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v){
         switch (v.getId()) {
             case R.id.cardView1:
-                Intent intent=new Intent(MainActivity.this,FormActivity.class);
+                Intent intent=new Intent(MainActivity.this,FormActivity.class);       //进入课程表
                 startActivity(intent);
                 break;
             case R.id.cardView2:
 
                 break;
             case R.id.cardView3:
-                Intent intent1=new Intent(MainActivity.this,QaActivity.class);
-                startActivity(intent1);
+                List<User> users= DataSupport.where("user = ? ",userName).find(User.class);
+                for(User user:users) {
+                    if (user.getIdentity() == "1") {
+                        Intent intent1=new Intent(MainActivity.this,QaActivity.class);       //进入教师qa问答系统
+                        intent1.putExtra("extra_data",userName);
+                        startActivity(intent1);
+                    } else {
+                        Intent intent2=new Intent(MainActivity.this,Qa1sActivity.class);      //进入学生qa问答系统
+                        intent2.putExtra("extra_data",userName);
+                        startActivity(intent2);
+                    }
+                }
                 break;
 
         }
