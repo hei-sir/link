@@ -1,6 +1,7 @@
 package com.example.hei_sir.link;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.GravityCompat;
@@ -114,9 +115,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.cardView3:
-                List<User> users= DataSupport.where("user = ? ",userName).find(User.class);
-                for(User user:users) {
-                    if (user.getIdentity() == "1") {
+                Cursor cursor= DataSupport.findBySQL("select * from User where user = ? and identity = ?",userName,"老师");
+                    if (cursor.moveToFirst() == true) {
                         Intent intent1=new Intent(MainActivity.this,QaActivity.class);       //进入教师qa问答系统
                         intent1.putExtra("extra_data",userName);
                         startActivity(intent1);
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         intent2.putExtra("extra_data",userName);
                         startActivity(intent2);
                     }
-                }
+                    cursor.close();
                 break;
 
         }

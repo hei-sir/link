@@ -23,6 +23,15 @@ public class Qa extends DataSupport{
     private String content;
     private String time;
     private String answer;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getAnswer() {
         return answer;
@@ -72,12 +81,13 @@ public class Qa extends DataSupport{
         this.time = time;
     }
 
-    public Qa(String sname,String tname,String time,int imageId,String content,String answer){
+    public Qa(String sname,String tname,String time,int imageId,String content,String answer,String status){
         this.sname=sname;
         this.tname=tname;
         this.time=time;
         this.imageId=imageId;
         this.content=content;
         this.answer=answer;
+        this.status=status;
     }
 }

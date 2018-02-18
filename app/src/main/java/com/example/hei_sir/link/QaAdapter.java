@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,9 @@ public abstract class QaAdapter extends RecyclerView.Adapter<QaAdapter.ViewHolde
                 Intent intent=new Intent(mContext,Qa2tActivity.class);
                 intent.putExtra(Qa2tActivity.QA_NAME,qa.getSname());
                 intent.putExtra(Qa2tActivity.QA_CONTENT,qa.getContent());
+                intent.putExtra(Qa2tActivity.QA_ANSWER,qa.getAnswer());
+                Log.d("QaAdapter",qa.getSname());
+                Log.d("QaAdapter",qa.getContent());
                 mContext.startActivity(intent);
             }
         });

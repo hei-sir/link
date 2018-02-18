@@ -63,7 +63,8 @@
         </activity>
         <activity android:name=".QaActivity" />
         <activity android:name=".Qa2tActivity" />
-        <activity android:name=".Qa1sActivity"></activity>
+        <activity android:name=".Qa1sActivity" />
+        <activity android:name=".Qa2sActivity"></activity>
     </application>
 
 </manifest>
