@@ -59,9 +59,10 @@ public abstract class QaAdapter extends RecyclerView.Adapter<QaAdapter.ViewHolde
                 int position=holder.getAdapterPosition();
                 Qa qa=mQaList.get(position);
                 Intent intent=new Intent(mContext,Qa2tActivity.class);
-                intent.putExtra(Qa2tActivity.QA_NAME,qa.getSname());
+                intent.putExtra(Qa2tActivity.QA_SNAME,qa.getSname());
                 intent.putExtra(Qa2tActivity.QA_CONTENT,qa.getContent());
                 intent.putExtra(Qa2tActivity.QA_ANSWER,qa.getAnswer());
+                intent.putExtra(Qa2tActivity.QA_TNAME,qa.getTname());
                 Log.d("QaAdapter",qa.getSname());
                 Log.d("QaAdapter",qa.getContent());
                 mContext.startActivity(intent);

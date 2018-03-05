@@ -27,7 +27,7 @@ public class Qa1sActivity extends AppCompatActivity {
     private Qa1sAdapter adapter;
     SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd");
     private SwipeRefreshLayout swipeRefresh;
-    private static String userName;
+    private static String userName,sname;
     private String tname,time,status,content,answer;
 
     @Override
@@ -35,6 +35,8 @@ public class Qa1sActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qa1s);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Intent intent=getIntent();
+        userName=intent.getStringExtra("extra_data");
         FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,21 +47,23 @@ public class Qa1sActivity extends AppCompatActivity {
                 finish();
             }
         });
-        Intent intent=getIntent();
-        userName=intent.getStringExtra("extra_data");
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         setSupportActionBar(toolbar);
-        initQas();      //初始化信息栏
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager=new GridLayoutManager(this,1);       //一行只显示一个数据
         recyclerView.setLayoutManager(layoutManager);
         adapter = new Qa1sAdapter(qaList) {
             @Override
             public int getItemCount() {
-                Cursor cursor= DataSupport.findBySQL("select * from Qa where sname = ?",userName);
+                Cursor cursor1=DataSupport.findBySQL("select * from User where user = ?",userName);
+                if (cursor1.moveToFirst()){
+                    sname=cursor1.getString(cursor1.getColumnIndex("name"));
+                }
+                Cursor cursor= DataSupport.findBySQL("select * from Qa where sname = ? ",sname);
                 return cursor.getCount();
             }        //sql语句，返回查询的行数，实现数目统一
         };
+        initQas();      //初始化信息栏
         recyclerView.setAdapter(adapter);
         ActionBar actionBar = getSupportActionBar();
         navView.setCheckedItem(R.id.nav_info);
@@ -74,7 +78,12 @@ public class Qa1sActivity extends AppCompatActivity {
     }
 
     private void initQas() {               //初始化信息栏
-        Cursor cursor= DataSupport.findBySQL("select * from Qa where sname = ?",userName);
+        Cursor cursor1=DataSupport.findBySQL("select * from User where user = ?",userName);
+        if (cursor1.moveToFirst()){
+            sname=cursor1.getString(cursor1.getColumnIndex("name"));
+        }
+        cursor1.close();
+        Cursor cursor= DataSupport.findBySQL("select * from Qa where sname = ?  order by time desc",sname);
         if(cursor.moveToFirst()==false){
             Toast.makeText(Qa1sActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
         }else {
@@ -86,10 +95,10 @@ public class Qa1sActivity extends AppCompatActivity {
                     content=cursor.getString(cursor.getColumnIndex("content"));
                     answer=cursor.getString(cursor.getColumnIndex("answer"));
                     if (answer.equals("")){
-                        Qa q = new Qa(tname,userName,time,R.drawable.qa_red,"     问题："+content+"\n\n"+"     暂未回答     "+answer,answer,status);
+                        Qa q = new Qa(tname,sname,time,R.drawable.qa_red,"     问题："+content+"\n\n"+"     暂未回答     "+answer,answer,status);
                         qaList.add(q);
                     }else {
-                        Qa q= new Qa(tname,userName,time,R.drawable.qa_green,"     问题："+content+"\n\n"+"     已回答：     "+answer,answer,status);
+                        Qa q= new Qa(tname,sname,time,R.drawable.qa_green,"     问题："+content+"\n\n"+"     已回答：     "+answer,answer,status);
                         qaList.add(q);}
                 } while (cursor.moveToNext());
         }

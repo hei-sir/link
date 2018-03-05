@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -71,6 +72,7 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
             et_password.setText(password);
             rememberPass.setChecked(true);//识别保存账号密码
         }
+       //Toast.makeText(this,account+"和"+password,Toast.LENGTH_SHORT).show();
         init();
     }
 
@@ -150,12 +152,10 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
             et_password.setText("");
         }else {
             editor = pref.edit();
-            String account = pref.getString("account", "");
-            String password = pref.getString("password", "");
             if (rememberPass.isChecked()) {
                 editor.putBoolean("remenber_password", true);
-                editor.putString("account", account);
-                editor.putString("password", password);
+                editor.putString("account", currentUsername);
+                editor.putString("password", currentPassword);
             } else {
                 editor.clear();
             }
@@ -181,7 +181,7 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
                 public void run() {
                     //在此处输入操作
                     try {
-                        Thread.sleep(2000);  //在此处睡眠两秒
+                        Thread.sleep(1000);  //在此处睡眠两秒
                     } catch (InterruptedException e) {
                     }
 

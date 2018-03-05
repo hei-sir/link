@@ -22,20 +22,22 @@ import java.util.List;
 
 public class Qa2tActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String QA_NAME="qa_name";
+    public static final String QA_SNAME="qa_sname";
+    public static final String QA_TNAME="qa_tname";
     public static final String QA_CONTENT="qa_content";
     public static final String QA_ANSWER="qa_answer";
     private EditText qaAnswer;
-    private static String qaNname,qaContent,qaAnswer1;
+    private static String qatname,qaContent,qaAnswer1,qasname;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm E");
-    private String school,grade,clsses,tname,answer1;
+    private String school,grade,clsses,userName,answer1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qa2t);
         Intent intent=getIntent();
-        qaNname=intent.getStringExtra(QA_NAME);
+        qatname=intent.getStringExtra(QA_TNAME);
+        qasname=intent.getStringExtra(QA_SNAME);
         qaContent=intent.getStringExtra(QA_CONTENT);
         qaAnswer1=intent.getStringExtra(QA_ANSWER);
         //Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
@@ -43,7 +45,7 @@ public class Qa2tActivity extends AppCompatActivity implements View.OnClickListe
         TextView qaContentText=(TextView)findViewById(R.id.qa_content);
         Button button = (Button) findViewById(R.id.button);
         qaAnswer=(EditText)findViewById(R.id.qa_answer);
-        qaSnameText.setText(qaNname);
+        qaSnameText.setText(qasname);
         qaContentText.setText(qaContent);
         if (qaAnswer1.equals("")) {
             //qaAnswer.setHint("555");
@@ -77,40 +79,22 @@ public class Qa2tActivity extends AppCompatActivity implements View.OnClickListe
 
     public void answer(){
         final String answer = qaAnswer.getText().toString().trim();
-        Cursor cursor = DataSupport.findBySQL("select * from User where user = ?", qaNname);     //查询此用户名下数据库是否有值"select * from Book where name = ?","589");
-        if (cursor.moveToFirst())
-            do{
-                school = cursor.getString(cursor.getColumnIndex("school"));
-                //Log.d("Qa2sActivity",school);
-                grade = cursor.getString(cursor.getColumnIndex("grade"));
-                //Log.d("Qa2sActivity",grade);
-                clsses = cursor.getString(cursor.getColumnIndex("clsses"));
-                //Log.d("Qa2sActivity",clsses);
-            }while (cursor.moveToNext());
-        cursor.close();
-        Cursor cursor1 = DataSupport.findBySQL("select * from User where school = ? and grade= ?and clsses = ? and identity = ?", school, grade, clsses, "老师");
-        if (cursor1.moveToFirst())
-            do {
-                tname = cursor1.getString(cursor1.getColumnIndex("name"));
-                Log.d("Qa2sActivity",tname);              //老师名字
-            } while (cursor.moveToNext());
+        String[] array=qaContent.split("\\s+");         //正则表达式提取问题content
+        String[] array1=array[1].split("：+");
         if (TextUtils.isEmpty(answer)) {  //当提问没有输入时
-            Toast.makeText(this, "提问不能为空！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "答案不能为空！", Toast.LENGTH_SHORT).show();
             qaAnswer.requestFocus();//使输入框失去焦点
             return;
         }else {
 
-            Log.d("Qa2sActivity",qaNname);
-            Log.d("Qa2sActivity",qaContent);
+            Log.d("Qa2tActivity",qasname);
+            Log.d("Qa2tActivity",qaContent);
 
-            cursor1.close();
-            //Cursor cursor2=DataSupport.findBySQL("update Qa set answer=? and status = ? where tname = ? and sname = ? and content = ?",answer,"1",tname,qaNname,qaContent);     //这是更新数据出现问题！
-            //cursor2.close();
 
 
             Log.d("Qa2tActivity","输入的答案"+":"+answer);
 
-            Cursor cursor3=DataSupport.findBySQL("select * from Qa where tname = ? and sname = ?",tname,qaNname);
+            Cursor cursor3=DataSupport.findBySQL("select * from Qa where tname = ? and sname = ? and content = ?",qatname,qasname,array1[1]);
             if (cursor3.moveToFirst()) {
 
                 do {
@@ -120,15 +104,28 @@ public class Qa2tActivity extends AppCompatActivity implements View.OnClickListe
                     values.put("answer",answer);
                     values.put("time", sdf.format(new Date()));
                     values.put("status","1");
-                    DataSupport.updateAll(Qa.class,values," tname=? and sname=? and content=?",tname,qaNname,content1);
-                } while (cursor.moveToNext());
+                    DataSupport.updateAll(Qa.class,values," tname=? and sname=? and content=?",qatname,qasname,content1);
+                } while (cursor3.moveToNext());
             }else{
                 Log.d("Qa2tActivity","没有记录");
             }
 
             Toast.makeText(this,"回答成功",Toast.LENGTH_SHORT).show();
+
+           Cursor cursor=DataSupport.findBySQL("select * from User where name = ?",qasname);          //没有考虑重名情况
+           if (cursor.moveToFirst()){
+               school=cursor.getString(cursor.getColumnIndex("school"));
+               grade=cursor.getString(cursor.getColumnIndex("grade"));
+               clsses=cursor.getString(cursor.getColumnIndex("clsses"));
+           }
+           cursor.close();
+           Cursor cursor1=DataSupport.findBySQL("select * from User where school = ? and grade = ? and clsses= ? and identity = ?",school,grade,clsses,"老师");
+           if (cursor1.moveToFirst()){
+               userName=cursor1.getString(cursor1.getColumnIndex("user"));
+           }
+           cursor1.close();
             Intent intent=new Intent(this,QaActivity.class);
-            intent.putExtra("extra_data",tname);
+            intent.putExtra("extra_data",userName);
             startActivity(intent);
             finish();
         }

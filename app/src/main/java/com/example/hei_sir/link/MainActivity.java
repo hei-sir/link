@@ -34,6 +34,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private DrawerLayout mDrawerLayout;
     private CardView mCardView1,mCardView2,mCardView3;
+    private TextView txt;
     private static boolean isExit = false;
     private static String userName;
 
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        txt=(TextView)findViewById(R.id.txt);
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         setSupportActionBar(toolbar);
@@ -68,11 +70,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {          //菜单栏监听器
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-
                 switch(item.getItemId()) {
                     case R.id.nav_info:
                     mDrawerLayout.closeDrawers();                       //关闭滑动菜单
-                    Toast.makeText(MainActivity.this, "这是个人信息", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "这是个人信息", Toast.LENGTH_SHORT).show();
                         Intent intent1 = new Intent(MainActivity.this, Main3Activity.class);  //进入主界面
                         intent1.putExtra("extra_data",userName);
                         finish();
@@ -80,15 +81,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                     case R.id.nav_main:
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
-                        Toast.makeText(MainActivity.this, "这是主页", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(MainActivity.this, "这是主页", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_zone:
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
-                        Toast.makeText(MainActivity.this, "这是班级天地", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "这是班级天地", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, Main2Activity.class);  //进入主界面
                         intent.putExtra("extra_data",userName);
+                        intent.putExtra("extra_num","0");
                         startActivity(intent);  //开始跳转
                         finish();
+                        break;
+                    case R.id.icon_image:
+                        Toast.makeText(MainActivity.this,"这是图标",Toast.LENGTH_SHORT).show();
                         break;
                 }return true;
             }

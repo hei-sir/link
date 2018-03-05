@@ -2,11 +2,12 @@
 <litepal>
     <dbname value="Link"></dbname>
 
-    <version value="4"></version>
+    <version value="9"></version>
 
     <list>
         <mapping class="com.example.hei_sir.link.Form"></mapping>
         <mapping class="com.example.hei_sir.link.Qa"></mapping>
         <mapping class="com.example.hei_sir.link.User"></mapping>
+        <mapping class="com.example.hei_sir.link.Zone"></mapping>
     </list>
 </litepal>

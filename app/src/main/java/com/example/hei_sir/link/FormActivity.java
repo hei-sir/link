@@ -92,13 +92,4 @@ public class FormActivity extends AppCompatActivity {
             }
         });
     }
-    public boolean onKeyDown(int keyCode, KeyEvent event) {               //退出确认
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent1=new Intent(FormActivity.this, MainActivity.class);
-            startActivity(intent1);
-            finish();
-            return false;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 }

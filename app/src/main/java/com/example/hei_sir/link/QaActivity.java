@@ -26,7 +26,7 @@ public class QaActivity extends AppCompatActivity {
     private QaAdapter adapter;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm E");
     private SwipeRefreshLayout swipeRefresh;
-    private static String userName;
+    private static String userName,tname;
     private String sname,time,status,content,answer;
 
     @Override
@@ -38,17 +38,21 @@ public class QaActivity extends AppCompatActivity {
         userName=intent.getStringExtra("extra_data");
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         setSupportActionBar(toolbar);
-        initQas();      //初始化信息栏
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager=new GridLayoutManager(this,1);       //一行只显示一个数据
         recyclerView.setLayoutManager(layoutManager);
         adapter = new QaAdapter(qaList) {
             @Override
             public int getItemCount() {
-                Cursor cursor= DataSupport.findBySQL("select * from Qa where tname = ?",userName);
+                Cursor cursor1=DataSupport.findBySQL("select * from User where user = ?",userName);
+                if (cursor1.moveToFirst()){
+                    tname=cursor1.getString(cursor1.getColumnIndex("name"));
+                }
+                Cursor cursor= DataSupport.findBySQL("select * from Qa where tname = ?",tname);
                 return cursor.getCount();
             }        //sql语句，返回查询的行数，实现数目统一
         };
+        initQas();      //初始化信息栏
         recyclerView.setAdapter(adapter);
         ActionBar actionBar = getSupportActionBar();
         navView.setCheckedItem(R.id.nav_info);
@@ -63,7 +67,12 @@ public class QaActivity extends AppCompatActivity {
     }
 
     private void initQas() {               //初始化信息栏
-        Cursor cursor= DataSupport.findBySQL("select * from Qa where tname = ?",userName);
+        Cursor cursor1=DataSupport.findBySQL("select * from User where user = ?",userName);
+        if (cursor1.moveToFirst()){
+            tname=cursor1.getString(cursor1.getColumnIndex("name"));
+        }
+        cursor1.close();
+        Cursor cursor= DataSupport.findBySQL("select * from Qa where tname = ? order by time desc",tname);
         if(cursor.moveToFirst()==false){
             Toast.makeText(QaActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
         }else {
@@ -74,13 +83,13 @@ public class QaActivity extends AppCompatActivity {
                 status=cursor.getString(cursor.getColumnIndex("status"));
                 content=cursor.getString(cursor.getColumnIndex("content"));
                 answer=cursor.getString(cursor.getColumnIndex("answer"));
+                Log.d("QaActivity",answer);
                 if (answer.equals("")){
-                    Qa q = new Qa(sname,userName,time,R.drawable.qa_red,"     问题："+content+"\n\n"+"     暂未回答     "+answer,answer,status);
+                    Qa q = new Qa(sname,tname,time,R.drawable.qa_red,"     问题："+content+"\n\n"+"     暂未回答     "+answer,answer,status);
                     qaList.add(q);
                 }else {
-                    Qa q= new Qa(sname,userName,time,R.drawable.qa_green,"     问题："+content+"\n\n"+"     已回答：     "+answer,answer,status);
+                    Qa q= new Qa(sname,tname,time,R.drawable.qa_green,"     问题："+content+"\n\n"+"     已回答：     "+answer,answer,status);
                     qaList.add(q);}
-                Log.d("QaActivity",answer);
                 //Log.d("QaActivity",status);
             } while (cursor.moveToNext());
         }

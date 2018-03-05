@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -54,7 +55,7 @@ public class Main3Activity extends AppCompatActivity {
         InfoAdapter adapter= new InfoAdapter(infoList) {
             @Override
             public int getItemCount() {
-                return 5;
+                return 6;
             }
         };
         recyclerView.setAdapter(adapter);
@@ -71,11 +72,11 @@ public class Main3Activity extends AppCompatActivity {
                 switch(item.getItemId()) {
                     case R.id.nav_info:
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
-                        Toast.makeText(Main3Activity.this, "这是个人信息", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Main3Activity.this, "这是个人信息", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_main:
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
-                        Toast.makeText(Main3Activity.this, "这是主页", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Main3Activity.this, "这是主页", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Main3Activity.this, MainActivity.class);  //进入主界面
                         intent.putExtra("extra_data",userName);
                         startActivity(intent);  //开始跳转
@@ -83,9 +84,10 @@ public class Main3Activity extends AppCompatActivity {
                         break;
                     case R.id.nav_zone:
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
-                        Toast.makeText(Main3Activity.this, "这是班级天地", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Main3Activity.this, "这是班级天地", Toast.LENGTH_SHORT).show();
                         Intent intent1= new Intent(Main3Activity.this, Main2Activity.class);  //进入主界面
                         intent1.putExtra("extra_data",userName);
+                        intent1.putExtra("extra_num","0");
                         startActivity(intent1);  //开始跳转
                         finish();  //finish掉此界面
 
@@ -135,6 +137,17 @@ public class Main3Activity extends AppCompatActivity {
                 infoList.add(Num);
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public void exit() {

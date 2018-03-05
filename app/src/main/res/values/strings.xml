@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">登录注册</string>
+    <string name="app_name">link</string>
     <string name="user_name">请输入用户名/电话号</string>
     <string name="password">请输入密码</string>
     <string name="forget_code">忘记密码</string>
