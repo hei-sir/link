@@ -12,4 +12,5 @@ public class Score extends DataSupport {
     private String times;
     private String subject;
     private String score;
+    private String notice;
 }

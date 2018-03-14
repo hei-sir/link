@@ -114,30 +114,30 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("ZoneActivity",sdf.format( new Date()));
             Log.d("ZoneActivity",content);*/
             if (photo==0){
-                Toast.makeText(this,"提问成功",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this,"提问成功",Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(this,Main2Activity.class);
                 intent.putExtra("extra_data",userName);
                 intent.putExtra("extra_num","0");
                 startActivity(intent);
                 finish();
             }else if (photo==1){
-                Toast.makeText(this,"提问成功",Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(this,"提问成功",Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(this,Main2Activity.class);
                 intent.putExtra("extra_data",userName);
                 intent.putExtra("extra_photo","无");
                 intent.putExtra("extra_num","1");
                 startActivity(intent);
                 finish();
-                Toast.makeText(this,"已拍照",Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(this,"已拍照",Toast.LENGTH_SHORT).show();
             }else if (photo==2){
-                Toast.makeText(this,"提问成功",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this,"提问成功",Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(this,Main2Activity.class);
                 intent.putExtra("extra_data",userName);
                 intent.putExtra("extra_photo",imagePath1);
                 intent.putExtra("extra_num","2");
                 startActivity(intent);
                 finish();
-                Toast.makeText(this,"已从相册选择",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this,"已从相册选择",Toast.LENGTH_SHORT).show();
             }
         }
     }

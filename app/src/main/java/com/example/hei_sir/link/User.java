@@ -25,6 +25,16 @@ public class User extends DataSupport{
     private String identity;
     private String grade;
     private String clsses;
+    private String notice;
+    private String photo;
+
+    public String getNotice() {
+        return notice;
+    }
+
+    public void setNotice(String notice) {
+        this.notice = notice;
+    }
 
     public String getGrade() {
         return grade;

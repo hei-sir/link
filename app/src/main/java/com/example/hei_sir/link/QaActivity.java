@@ -85,10 +85,10 @@ public class QaActivity extends AppCompatActivity {
                 answer=cursor.getString(cursor.getColumnIndex("answer"));
                 Log.d("QaActivity",answer);
                 if (answer.equals("")){
-                    Qa q = new Qa(sname,tname,time,R.drawable.qa_red,"     问题："+content+"\n\n"+"     暂未回答     "+answer,answer,status);
+                    Qa q = new Qa(sname,tname,time,R.drawable.qa_red,"     问题："+content+"\n\n"+"回答："+"     暂未回答     "+answer,answer,status);
                     qaList.add(q);
                 }else {
-                    Qa q= new Qa(sname,tname,time,R.drawable.qa_green,"     问题："+content+"\n\n"+"     已回答：     "+answer,answer,status);
+                    Qa q= new Qa(sname,tname,time,R.drawable.qa_green,"     问题："+content+"\n\n"+"回答："+answer,answer,status);
                     qaList.add(q);}
                 //Log.d("QaActivity",status);
             } while (cursor.moveToNext());

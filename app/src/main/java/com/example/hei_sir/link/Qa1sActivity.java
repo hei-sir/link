@@ -38,7 +38,7 @@ public class Qa1sActivity extends AppCompatActivity {
         Intent intent=getIntent();
         userName=intent.getStringExtra("extra_data");
         FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Qa1sActivity.this,Qa2sActivity.class);
@@ -95,10 +95,10 @@ public class Qa1sActivity extends AppCompatActivity {
                     content=cursor.getString(cursor.getColumnIndex("content"));
                     answer=cursor.getString(cursor.getColumnIndex("answer"));
                     if (answer.equals("")){
-                        Qa q = new Qa(tname,sname,time,R.drawable.qa_red,"     问题："+content+"\n\n"+"     暂未回答     "+answer,answer,status);
+                        Qa q = new Qa(tname,sname,time,R.drawable.qa_red,"     问题："+content+"\n\n"+"回答："+"     暂未回答     "+answer,answer,status);
                         qaList.add(q);
                     }else {
-                        Qa q= new Qa(tname,sname,time,R.drawable.qa_green,"     问题："+content+"\n\n"+"     已回答：     "+answer,answer,status);
+                        Qa q= new Qa(tname,sname,time,R.drawable.qa_green,"     问题："+content+"\n\n"+"回答："+answer,answer,status);
                         qaList.add(q);}
                 } while (cursor.moveToNext());
         }

@@ -54,6 +54,7 @@ public class Qa2tActivity extends AppCompatActivity implements View.OnClickListe
             qaAnswer.setHint("输入想修改的答案");
             button.setText("修改回答");
         }
+
         init();
 
     }
@@ -79,8 +80,8 @@ public class Qa2tActivity extends AppCompatActivity implements View.OnClickListe
 
     public void answer(){
         final String answer = qaAnswer.getText().toString().trim();
-        String[] array=qaContent.split("\\s+");         //正则表达式提取问题content
-        String[] array1=array[1].split("：+");
+        String[] array=qaContent.split("回答：+");         //正则表达式提取问题content
+        String[] array1=array[0].split("：+");
         if (TextUtils.isEmpty(answer)) {  //当提问没有输入时
             Toast.makeText(this, "答案不能为空！", Toast.LENGTH_SHORT).show();
             qaAnswer.requestFocus();//使输入框失去焦点
@@ -91,12 +92,11 @@ public class Qa2tActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("Qa2tActivity",qaContent);
 
 
-
+            Log.d("Qa2tActivity","输入的问题"+":"+array1[1]);
             Log.d("Qa2tActivity","输入的答案"+":"+answer);
 
             Cursor cursor3=DataSupport.findBySQL("select * from Qa where tname = ? and sname = ? and content = ?",qatname,qasname,array1[1]);
             if (cursor3.moveToFirst()) {
-
                 do {
                     String content1 = cursor3.getString(cursor3.getColumnIndex("content"));
                     Log.d("Qa2tActivity","数据库的问题"+":"+content1);
