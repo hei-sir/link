@@ -160,37 +160,6 @@
             android:layout_height="1px"
             android:layout_marginLeft="28dp"
             android:layout_marginRight="28dp"
-            android:background="#d9d9d9" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:gravity="center"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="确认密码"/>
-
-            <EditText
-                android:id="@+id/et_password1"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@null"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="32dp"
-                android:hint="确认登录密码"
-                android:inputType="textPassword"
-                android:textColor="@android:color/darker_gray"
-                android:textColorHint="@android:color/darker_gray"
-                android:textSize="14sp" />
-        </LinearLayout>
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:layout_marginLeft="28dp"
-            android:layout_marginRight="28dp"
             android:background="#d9d9d9"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -212,7 +181,7 @@
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:layout_marginLeft="60dp"
-                android:hint="请输入学生姓名"
+                android:hint="请输入姓名(家长填写学生姓名)"
                 android:textColor="@android:color/darker_gray"
                 android:textColorHint="@android:color/darker_gray"
                 android:textSize="14sp" />
@@ -296,11 +265,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:text="身份选择"/>
+                android:text="账户类型选择"/>
             <Spinner
                 android:id="@+id/identity"
                 android:entries="@array/identity"
-                android:layout_marginLeft="27dp"
+                android:layout_marginLeft="1dp"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:background="@null"

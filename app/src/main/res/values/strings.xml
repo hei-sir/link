@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">登录注册</string>
+    <string name="app_name">link</string>
     <string name="user_name">请输入用户名/电话号</string>
     <string name="password">请输入密码</string>
     <string name="forget_code">忘记密码</string>
@@ -48,7 +48,7 @@
     </string-array>
     <string-array name="identity">
         <item>老师</item>
-        <item>家长</item>
+        <item>学生</item>
     </string-array>
     <string-array name="grades">
         <item>一年级</item>

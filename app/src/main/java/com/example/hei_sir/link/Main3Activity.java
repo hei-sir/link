@@ -1,6 +1,7 @@
 package com.example.hei_sir.link;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.NavigationView;
@@ -12,9 +13,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.hei_sir.link.helper.GsonTools;
+import com.example.hei_sir.link.helper.HttpUtils;
+import com.socks.library.KLog;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +31,10 @@ import java.util.List;
 public class Main3Activity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private List<Info> infoList=new ArrayList<>();
+    private List<User> listMe;
+    private static String userName;
+    private String id;
+    private static String  b,c,d,e,f;
 
     private static boolean isExit = false;
     Handler mHandler = new Handler() {
@@ -40,6 +53,8 @@ public class Main3Activity extends AppCompatActivity {
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         setSupportActionBar(toolbar);
+        Intent intent=getIntent();
+        userName=intent.getStringExtra("extra_data");
         mDrawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
         initInfo();      //初始化信息栏
         RecyclerView recyclerView=(RecyclerView)findViewById(R.id.recycler_view);
@@ -48,7 +63,7 @@ public class Main3Activity extends AppCompatActivity {
         InfoAdapter adapter= new InfoAdapter(infoList) {
             @Override
             public int getItemCount() {
-                return 5;
+                return 6;
             }
         };
         recyclerView.setAdapter(adapter);
@@ -65,19 +80,22 @@ public class Main3Activity extends AppCompatActivity {
                 switch(item.getItemId()) {
                     case R.id.nav_info:
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
-                        Toast.makeText(Main3Activity.this, "这是个人信息", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Main3Activity.this, "这是个人信息", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_main:
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
-                        Toast.makeText(Main3Activity.this, "这是主页", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Main3Activity.this, "这是主页", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Main3Activity.this, MainActivity.class);  //进入主界面
+                        intent.putExtra("extra_data",userName);
                         startActivity(intent);  //开始跳转
                         finish();  //finish掉此界面
                         break;
                     case R.id.nav_zone:
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
-                        Toast.makeText(Main3Activity.this, "这是班级天地", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Main3Activity.this, "这是班级天地", Toast.LENGTH_SHORT).show();
                         Intent intent1= new Intent(Main3Activity.this, Main2Activity.class);  //进入主界面
+                        intent1.putExtra("extra_data",userName);
+                        intent1.putExtra("extra_num","0");
                         startActivity(intent1);  //开始跳转
                         finish();  //finish掉此界面
 
@@ -109,19 +127,46 @@ public class Main3Activity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.toolbar,menu);
         return true;
     }
+
+
     private void initInfo(){               //初始化信息栏
-        for (int i=0;i<2;i++){
-            Info Name=new Info("姓名","张三");
-            Info School=new Info("学校","小学");
-            Info Grade=new Info("年级","3");
-            Info Class=new Info("班级","2");
-            Info Num=new Info("学号","1632");
-            infoList.add(Name);
-            infoList.add(School);
-            infoList.add(Grade);
-            infoList.add(Class);
-            infoList.add(Num);
+       // List<User> users= DataSupport.where("user = ? ",userName).find(User.class);for(User user:users){
+           // for (int i=0;i<2;i++) {
+
+        Cursor cursor1=DataSupport.findBySQL("select * from User where user = ?",userName);
+        if (cursor1.moveToFirst()){
+            cursor1.moveToFirst();
+            KLog.d("这里是listView");
+            for (int i=0;i<2;i++) {
+                Info User = new Info("账户", cursor1.getString(cursor1.getColumnIndex("user")));
+                KLog.d(cursor1.getString(cursor1.getColumnIndex("number")));
+                Info Name = new Info("姓名", cursor1.getString(cursor1.getColumnIndex("name"))+"   "+cursor1.getString(cursor1.getColumnIndex("identity")));
+                Info School = new Info("学校", cursor1.getString(cursor1.getColumnIndex("school")));
+                Info Grade = new Info("年级", cursor1.getString(cursor1.getColumnIndex("grade")));
+                Info Class = new Info("班级", cursor1.getString(cursor1.getColumnIndex("clsses")));
+                Info Num = new Info("学号", cursor1.getString(cursor1.getColumnIndex("number")));
+                infoList.add(User);
+                infoList.add(Name);
+                infoList.add(School);
+                infoList.add(Grade);
+                infoList.add(Class);
+                infoList.add(Num);
+
+            }
         }
+         //   }
+        //}
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public void exit() {

@@ -1,16 +1,72 @@
 package com.example.hei_sir.link;
 
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by hei_sir on 2018/1/18.
  */
 
-public class User {
+public class User extends DataSupport{
+
+    public static String USER= "user";
+    public static String PASSWORD = "password";
+    public static String NAME="name";
+    public static String SCHOOL="school";
+    public static String NUMBER="number";
+    public static String IDENTITY="identity";
+    public static String GRADE="grade";
+    public static String CLSSES="clsses";
+    public static String NOTICE="notice";
+    public static String PHOTO="photo";
+    public static String STATUS="status";
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private String user;
     private String password;
     private String name;
     private String school;
     private String number;
     private String identity;
+    private String grade;
+    private String clsses;
+    private String notice;
+    private String photo;
+
+    public String getPhoto(){return photo;}
+
+    public void setPhoto(String photo){this.photo=photo;}
+
+    public String getNotice() {
+        return notice;
+    }
+
+    public void setNotice(String notice) {
+        this.notice = notice;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public String getClsses() {
+        return clsses;
+    }
+
+    public void setClsses(String clsses) {
+        this.clsses = clsses;
+    }
 
     public String getUser() {
         return user;
@@ -60,13 +116,19 @@ public class User {
         this.identity = identity;
     }
 
-    public String getGradeclass() {
-        return gradeclass;
+    public User(){
+        super();
     }
 
-    public void setGradeclass(String gradeclass) {
-        this.gradeclass = gradeclass;
+    public User(String user,String name,String identity,String school,String grade,String clsses,String number){
+        super();
+        this.user=user;
+        this.name=name;
+        this.identity=identity;
+        this.school=school;
+        this.grade=grade;
+        this.clsses=clsses;
+        this.number=number;
     }
 
-    private String gradeclass;
 }

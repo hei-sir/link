@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f2f2f2"
+    android:orientation="vertical" >
+
+    <LinearLayout style="@style/top_nav">
+
+        <ImageView
+            android:id="@+id/iv_return"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:src="@drawable/ico_commen_back"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="发布新动态"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/complete"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:paddingRight="20dp"
+            android:text="发表"
+            android:textColor="#404040"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View style="@style/common_line_gray_90"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="24dp"
+        android:background="#ffffff"
+        android:orientation="vertical" >
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#07a6e6" />
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="horizontal" >
+            <EditText
+                android:id="@+id/zone_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:hint="分享新鲜事..."/>
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
+        android:background="#d9d9d9"/>
+
+
+    <View
+        android:background="#f2f2f2"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_marginLeft="26dp"
+        android:layout_marginRight="26dp"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="24dp"
+        android:id="@+id/add_zoneimage"
+        android:scaleType="centerInside"
+        android:src="@mipmap/ic_launcher"/>
+    <!--<Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:text="相册"/>-->
+
+</LinearLayout>
