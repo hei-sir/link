@@ -7,6 +7,14 @@ import org.litepal.crud.DataSupport;
  */
 
 public class Qa extends DataSupport{
+
+    public static String SNAME= "sname";
+    public static String TNAME= "tname";
+    public static String CONTENT= "content";
+    public static String TIME= "time";
+    public static String ANSWER= "answer";
+    public static String STATUS="status";
+    public static String AAA="aaa";       //URL上传类别识别
     private int id;
 
     public int getId() {
@@ -81,7 +89,7 @@ public class Qa extends DataSupport{
         this.time = time;
     }
 
-    public Qa(String sname,String tname,String time,int imageId,String content,String answer,String status){
+    public Qa( String sname,String tname,String time,int imageId,String content,String answer,String status){
         this.sname=sname;
         this.tname=tname;
         this.time=time;

@@ -24,6 +24,7 @@ public abstract class Qa1sAdapter extends RecyclerView.Adapter<Qa1sAdapter.ViewH
         CardView cardView;
         TextView qaSname;
         TextView qaTname;
+        TextView qaAnswer;
         ImageView qaImage;
         TextView qaTime;
         TextView qaContent;
@@ -34,6 +35,7 @@ public abstract class Qa1sAdapter extends RecyclerView.Adapter<Qa1sAdapter.ViewH
             qaImage=(ImageView)itemView.findViewById(R.id.qa_image);
             qaSname=(TextView) itemView.findViewById(R.id.qa_name);
             qaContent=(TextView)itemView.findViewById(R.id.qa_content);
+            qaAnswer=(TextView)itemView.findViewById(R.id.qa_answer);
             qaTime=(TextView)itemView.findViewById(R.id.qa_time);
         }
     }
@@ -57,6 +59,7 @@ public abstract class Qa1sAdapter extends RecyclerView.Adapter<Qa1sAdapter.ViewH
         holder.qaSname.setText(qa.getSname());
         holder.qaTime.setText(qa.getTime());
         holder.qaContent.setText(qa.getContent());
+        holder.qaAnswer.setText(qa.getAnswer());
         holder.qaImage.setImageResource(qa.getImageId());
     }
 

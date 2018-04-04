@@ -1,5 +1,6 @@
 package com.example.hei_sir.link;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -24,6 +25,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.hei_sir.link.helper.GsonTools;
+import com.example.hei_sir.link.helper.HttpUtils;
+import com.socks.library.KLog;
+
 import org.litepal.crud.DataSupport;
 
 import java.text.SimpleDateFormat;
@@ -39,7 +44,7 @@ public class Main2Activity extends AppCompatActivity {
     private ZoneAdapter adapter;
     private Bitmap bitmap;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-    private String name,time,content,username,school,grade,clsses,imagePath;
+    private String name,time,content,username,school,grade,clsses,imagePath,image;
     private int imageId,num1;
     private String num="0";
 
@@ -236,6 +241,7 @@ public class Main2Activity extends AppCompatActivity {
         //以下代码为先按照时间倒序查找所有内容，然后排除掉不属于的username，剩下的应该是需要的部分
         int arraycount=0;      //判断数组总量
         Cursor cursor2=DataSupport.findBySQL("select * from Zone order by time desc");
+        KLog.d(cursor2.getCount());
         array= new String[cursor2.getCount()][5];
         if (cursor2.moveToFirst()==false){
             Toast.makeText(Main2Activity.this,"最新动态刷新失败",Toast.LENGTH_SHORT).show();
@@ -246,18 +252,16 @@ public class Main2Activity extends AppCompatActivity {
                 name = cursor2.getString(cursor2.getColumnIndex("name"));
                 time = cursor2.getString(cursor2.getColumnIndex("time"));
                 content = cursor2.getString(cursor2.getColumnIndex("content"));
+//                image=cursor2.getString(cursor2.getColumnIndex("imagePath"));
 //                imagePath=cursor2.getString(cursor2.getColumnIndex("imagePath"));
                // imagePath=cursor2.getString(cursor2.getColumnIndex("imagePath"));
                 Log.d("Main2Activity",content);
                 //imageId = cursor2.getInt(cursor2.getColumnIndex("imageId"));
-                String[] arraypath=content.split("n:n+");
-                Log.d("这应该是内容",arraypath[0]);
-                Log.d("这应该是图片",arraypath[1]);
                 array[i][0]=username;
                 array[i][1]=name;
                 array[i][2]=time;
-                array[i][3]=arraypath[0];
-                array[i][4]=arraypath[1];
+                array[i][3]=content;
+                array[i][4]=image;
                 arraycount=i;
                 Log.d("Main2Activity",String.valueOf(arraycount));
                 i=i+1;                  //将数据暂时存入数组，后面再处理
@@ -273,11 +277,18 @@ public class Main2Activity extends AppCompatActivity {
                 school=  cursor.getString(cursor.getColumnIndex("school"));
                 grade=  cursor.getString(cursor.getColumnIndex("grade"));
                 clsses=cursor.getString(cursor.getColumnIndex("clsses"));
+
+                KLog.d(school+"+"+grade+"+"+clsses);
                 //Qa q= new Qa(sname,userName,time,R.drawable.qa_green,"     问题："+content+"\n\n"+"     已回答：     "+answer,answer,status);
                 //qaList.add(q);}
             } while (cursor.moveToNext());
         }
         cursor.close();
+        Cursor curso= DataSupport.findBySQL("select * from User where school = ? and grade = ? and clsses = ? and user= ? ",school,grade,clsses,"123");
+        if (curso.moveToFirst()){
+            KLog.d("有123");
+        }
+        KLog.d("没123");
         Cursor cursor1= DataSupport.findBySQL("select * from User where school = ? and grade = ? and clsses = ? ",school,grade,clsses);
         user=new String[cursor1.getCount()];
         if (cursor1.moveToFirst()==true){
@@ -292,8 +303,9 @@ public class Main2Activity extends AppCompatActivity {
         }
         for (int i =0;i<cursor2.getCount();i++){
             for(int j=0;j<cursor1.getCount();j++){
+                KLog.d(array[i][0]+"+"+user[j]);
                 if(array[i][0].equals(user[j])){
-                    Zone zone=new Zone(array[i][0],array[i][1],array[i][2],array[i][3],R.mipmap.ic_launcher_round,array[i][4]);
+                    Zone zone=new Zone(array[i][0],array[i][1],array[i][2],array[i][3],R.mipmap.ic_launcher_round,"one");
                     zoneList.add(zone);
                 }
             }
@@ -307,6 +319,33 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try{
+
+                    String path3 = "http://"+ GsonTools.ip+":8080/Test/ZoneServlet";
+                    String jsonString3 = HttpUtils.getJsonContent(path3);//从网络获取数据
+                    List<Zone> listzone = GsonTools.stringToList(jsonString3,Zone.class);
+                    String name=userName;
+                    //日志打印
+                    for (Zone zone : listzone) {
+
+
+                        Cursor cursor1 = DataSupport.findBySQL("select * from Zone where username = ?and content = ?", zone.getUsername(),zone.getContent());  //搜寻本地是否有当前账户数据
+                        if (cursor1.moveToFirst() == false) {
+                            KLog.d("这里是数据库");
+                            KLog.d("新建用户:"+zone.getContent());
+                            Zone zone1 = new Zone(zone.getUsername(),zone.getName(),zone.getTime(),zone.getContent(),zone.getImagePath());         //无值，可以新建用户
+                            zone1.save();
+                        }else {
+                            KLog.d("更新用户:" + zone.getContent());
+                            ContentValues values = new ContentValues();                  //采用contentValues方法更新数据
+                            values.put("name", zone.getName());
+                            DataSupport.updateAll(Zone.class, values, "username=? and content=?", zone.getUsername(),zone.getContent());
+                        }
+                        cursor1.close();
+
+
+
+                        KLog.d("用户系统更新完成");
+                    }//在此处输入操作
                     Thread.sleep(2000);
                 }catch (InterruptedException e){
                     e.printStackTrace();
@@ -314,6 +353,7 @@ public class Main2Activity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
                         initZones();
                         adapter.notifyDataSetChanged();
                         swipeRefresh.setRefreshing(false);

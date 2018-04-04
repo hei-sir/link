@@ -7,6 +7,18 @@ import org.litepal.crud.DataSupport;
  */
 
 public class User extends DataSupport{
+
+    public static String USER= "user";
+    public static String PASSWORD = "password";
+    public static String NAME="name";
+    public static String SCHOOL="school";
+    public static String NUMBER="number";
+    public static String IDENTITY="identity";
+    public static String GRADE="grade";
+    public static String CLSSES="clsses";
+    public static String NOTICE="notice";
+    public static String PHOTO="photo";
+    public static String STATUS="status";
     private int id;
 
     public int getId() {
@@ -27,6 +39,10 @@ public class User extends DataSupport{
     private String clsses;
     private String notice;
     private String photo;
+
+    public String getPhoto(){return photo;}
+
+    public void setPhoto(String photo){this.photo=photo;}
 
     public String getNotice() {
         return notice;
@@ -98,6 +114,21 @@ public class User extends DataSupport{
 
     public void setIdentity(String identity) {
         this.identity = identity;
+    }
+
+    public User(){
+        super();
+    }
+
+    public User(String user,String name,String identity,String school,String grade,String clsses,String number){
+        super();
+        this.user=user;
+        this.name=name;
+        this.identity=identity;
+        this.school=school;
+        this.grade=grade;
+        this.clsses=clsses;
+        this.number=number;
     }
 
 }

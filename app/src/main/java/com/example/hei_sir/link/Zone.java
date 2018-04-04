@@ -7,6 +7,13 @@ import org.litepal.crud.DataSupport;
  */
 
 public class Zone extends DataSupport {
+
+    public static String USERNAME= "username";
+    public static String NAME="name";
+    public static String TIME= "time";
+    public static String CONTENT="content";
+    public static String AAA="aaa";
+    public static String IMAGEPATH="imagePath";
     private int id;
     private String username;
     private String name;
@@ -69,6 +76,14 @@ public class Zone extends DataSupport {
 
     public void setImageId(int imageId) {
         this.imageId = imageId;
+    }
+
+    public Zone(String username,String name,String time,String content,String imagePath){
+        this.username=username;
+        this.name=name;
+        this.time=time;
+        this.content=content;
+        this.imagePath=imagePath;
     }
 
     public Zone(String username,String name,String time,String content,int imageId,String imagePath){

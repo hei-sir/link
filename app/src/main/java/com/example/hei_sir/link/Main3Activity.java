@@ -1,6 +1,7 @@
 package com.example.hei_sir.link;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.NavigationView;
@@ -12,10 +13,15 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.hei_sir.link.helper.GsonTools;
+import com.example.hei_sir.link.helper.HttpUtils;
+import com.socks.library.KLog;
 
 import org.litepal.crud.DataSupport;
 
@@ -25,8 +31,10 @@ import java.util.List;
 public class Main3Activity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private List<Info> infoList=new ArrayList<>();
+    private List<User> listMe;
     private static String userName;
     private String id;
+    private static String  b,c,d,e,f;
 
     private static boolean isExit = false;
     Handler mHandler = new Handler() {
@@ -119,24 +127,35 @@ public class Main3Activity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.toolbar,menu);
         return true;
     }
+
+
     private void initInfo(){               //初始化信息栏
-        List<User> users= DataSupport.where("user = ? ",userName).find(User.class);
-        for(User user:users){
+       // List<User> users= DataSupport.where("user = ? ",userName).find(User.class);for(User user:users){
+           // for (int i=0;i<2;i++) {
+
+        Cursor cursor1=DataSupport.findBySQL("select * from User where user = ?",userName);
+        if (cursor1.moveToFirst()){
+            cursor1.moveToFirst();
+            KLog.d("这里是listView");
             for (int i=0;i<2;i++) {
-                Info User = new Info("账户", user.getUser());
-                Info Name = new Info("姓名", user.getName() + "  " + user.getIdentity());
-                Info School = new Info("学校", user.getSchool());
-                Info Grade = new Info("年级", user.getGrade());
-                Info Class = new Info("班级", user.getClsses());
-                Info Num = new Info("学号", user.getNumber());
+                Info User = new Info("账户", cursor1.getString(cursor1.getColumnIndex("user")));
+                KLog.d(cursor1.getString(cursor1.getColumnIndex("number")));
+                Info Name = new Info("姓名", cursor1.getString(cursor1.getColumnIndex("name"))+"   "+cursor1.getString(cursor1.getColumnIndex("identity")));
+                Info School = new Info("学校", cursor1.getString(cursor1.getColumnIndex("school")));
+                Info Grade = new Info("年级", cursor1.getString(cursor1.getColumnIndex("grade")));
+                Info Class = new Info("班级", cursor1.getString(cursor1.getColumnIndex("clsses")));
+                Info Num = new Info("学号", cursor1.getString(cursor1.getColumnIndex("number")));
                 infoList.add(User);
                 infoList.add(Name);
                 infoList.add(School);
                 infoList.add(Grade);
                 infoList.add(Class);
                 infoList.add(Num);
+
             }
         }
+         //   }
+        //}
     }
 
     @Override

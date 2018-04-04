@@ -20,7 +20,7 @@
             android:orientation="horizontal"
             android:background="#FFFFFF">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/zone_image"
@@ -28,6 +28,7 @@
                 android:scaleType="centerCrop"
                 android:src="@mipmap/ic_launcher"
                 />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

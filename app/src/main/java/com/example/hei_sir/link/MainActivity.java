@@ -33,18 +33,25 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hei_sir.link.helper.GsonTools;
+import com.example.hei_sir.link.helper.HttpUtils;
+import com.socks.library.KLog;
+
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private DrawerLayout mDrawerLayout;
     private CardView mCardView0,mCardView1,mCardView2,mCardView3;
-    private TextView txt;
+    private TextView txt,name;
     private static boolean isExit = false;
-    private static String userName;
+    private static String userName,school,grade,clsses;
     private String notice2,school1,grade1,clsses1,notice1;
     private Dialog mDialog;
     private Button bt_confirm;
@@ -59,7 +66,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             isExit = false;
         }
     };
+    Handler mHandler1 = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String result = "";
 
+            if ("OK".equals(msg.obj.toString())){
+                //getInfo();
+                result="success";
+
+            }else if ("Wrong".equals(msg.obj.toString())){
+                result="fail";
+            }else {
+                result = msg.obj.toString();
+            }
+            Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,14 +95,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         mDrawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
         RecyclerView recyclerView=(RecyclerView)findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
         ActionBar actionBar=getSupportActionBar();
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ico_sign_01);
         }
         navView.setCheckedItem(R.id.nav_main);
+        name=(TextView) findViewById(R.id.username);
+        CircleImageView icon=(CircleImageView)findViewById(R.id.icon_image);
         Intent intent=getIntent();
         userName=intent.getStringExtra("extra_data");
         init();
@@ -107,13 +131,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(intent);  //开始跳转
                         finish();
                         break;
-                    case R.id.icon_image:
-                        Toast.makeText(MainActivity.this,"这是图标",Toast.LENGTH_SHORT).show();
-                        break;
+                    default:
                 }return true;
             }
         });
     }
+
 
     private void init(){
         mCardView0=(CardView)findViewById(R.id.cardView0);
@@ -124,7 +147,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCardView2.setOnClickListener(this);
         mCardView3=(CardView)findViewById(R.id.cardView3);
         mCardView3.setOnClickListener(this);
-        Cursor cursor=DataSupport.findBySQL("select * from User where user=? and identity = ?",userName,"老师");
+
+        //获取公告数据！
+        new Thread(new Runnable() {
+            public void run() {
+                String path2 = "http://" + GsonTools.ip + ":8080/Test/NoticeServlet";
+                String jsonString2 = HttpUtils.getJsonContent(path2);//从网络获取数据
+                List<User> listMe = GsonTools.stringToList(jsonString2, User.class);
+                //日志打印
+                for (User user : listMe) {
+                    Cursor cursor=DataSupport.findBySQL("select * from User");
+                    if (cursor.moveToFirst()){
+                        String userid;
+                        cursor.moveToFirst();
+                        do{
+                            userid=cursor.getString(cursor.getColumnIndex("user"));
+                            if (userid.equals(user.getUser())){
+                                ContentValues values=new ContentValues();                  //采用contentValues方法更新数据
+                                values.put("notice",user.getNotice());
+                                DataSupport.updateAll(User.class,values," user = ?",userid);
+                            }
+                        }while (cursor.moveToNext());
+                    }
+                }
+            }
+        }).start();
+        Cursor cursor=DataSupport.findBySQL("select * from User where user=? and identity = ?",userName,"老师");          //后面补上查询
         if (cursor.moveToFirst()==true){
             cursor.moveToFirst();
             notice1=cursor.getString(cursor.getColumnIndex("notice"));
@@ -152,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.cardView0:
                 Cursor cursor4= DataSupport.findBySQL("select * from User where user = ? and identity = ?",userName,"老师");
-                if (cursor4.moveToFirst() == true) {
+                if (cursor4.moveToFirst()) {
                     showDialog(v);
                 }
                 cursor4.close();
@@ -162,9 +210,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.cardView2:
-
+                Intent intent3=new Intent(MainActivity.this,T1examActivity.class);       //进入教师qa问答系统
+                intent3.putExtra("extra_data",userName);
+                startActivity(intent3);
                 break;
             case R.id.cardView3:
+
+
                 Cursor cursor= DataSupport.findBySQL("select * from User where user = ? and identity = ?",userName,"老师");
                     if (cursor.moveToFirst() == true) {
                         Cursor cursor1=DataSupport.findBySQL("select * from User where user = ?",userName);
@@ -264,17 +316,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bt_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(editText.getText().toString().trim())){
-                    Toast.makeText(MainActivity.this,"请输入公告内容！",Toast.LENGTH_SHORT).show();
-                }else{
+                if (TextUtils.isEmpty(editText.getText().toString().trim())) {
+                    Toast.makeText(MainActivity.this, "请输入公告内容！", Toast.LENGTH_SHORT).show();
+                } else {
                     ContentValues values=new ContentValues();                  //采用contentValues方法更新数据
                     values.put("notice",editText.getText().toString());
                     DataSupport.updateAll(User.class,values," user = ?",userName);
                     Toast.makeText(MainActivity.this,"公告发布成功",Toast.LENGTH_SHORT).show();
-                    mDialog.dismiss();
-                    init();
+
+                    //上传数据
+                    String originAddress = "http://"+GsonTools.ip+":8080/Test/LoginServlet";
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put(User.USER,userName);
+                    params.put(User.NOTICE, editText.getText().toString());
+                    params.put(User.STATUS,"2");
+                    try {
+                        //构造完整URL
+                        String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
+                        //发送请求
+                        HttpUtil.sendHttpRequest(compeletedURL, new HttpCallbackListener() {
+                            @Override
+                            public void onFinish(String response) {
+                                Message message = new Message();
+                                message.obj = response;
+                                mHandler1.sendMessage(message);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Message message = new Message();
+                                message.obj = e.toString();
+                                mHandler1.sendMessage(message);
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
+                mDialog.dismiss();
+                init();
             }
         });
 

@@ -31,6 +31,7 @@ public abstract class QaAdapter extends RecyclerView.Adapter<QaAdapter.ViewHolde
         ImageView qaImage;
         TextView qaTime;
         TextView qaContent;
+        TextView qaAnswer;
 
         public ViewHolder(View view){
             super(view);
@@ -38,6 +39,7 @@ public abstract class QaAdapter extends RecyclerView.Adapter<QaAdapter.ViewHolde
             qaImage=(ImageView)itemView.findViewById(R.id.qa_image);
             qaSname=(TextView) itemView.findViewById(R.id.qa_name);
             qaContent=(TextView)itemView.findViewById(R.id.qa_content);
+            qaAnswer=(TextView)itemView.findViewById(R.id.qa_answer);
             qaTime=(TextView)itemView.findViewById(R.id.qa_time);
         }
     }
@@ -77,6 +79,7 @@ public abstract class QaAdapter extends RecyclerView.Adapter<QaAdapter.ViewHolde
             holder.qaSname.setText(qa.getSname());
             holder.qaTime.setText(qa.getTime());
             holder.qaContent.setText(qa.getContent());
+            holder.qaAnswer.setText(qa.getAnswer());
             holder.qaImage.setImageResource(qa.getImageId());
         }
 

@@ -12,6 +12,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +31,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hei_sir.link.helper.GsonTools;
+import com.socks.library.KLog;
+
 import org.litepal.crud.DataSupport;
 
 import java.io.File;
@@ -36,6 +41,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class ZoneActivity extends AppCompatActivity implements View.OnClickListener {
     private static String userName,name;
@@ -50,6 +56,26 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
     private String imagePath1="none";
     public static final int TAKE_PHOTO =1,CHOOSE_PHOTO=2;
     private int photo=0;             //0为未选择照片，1为拍照照片，2为相册照片
+
+
+    Handler mHandler1 = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String result = "";
+
+            if ("OK".equals(msg.obj.toString())){
+                //getInfo();
+                result="success";
+
+            }else if ("Wrong".equals(msg.obj.toString())){
+                result="fail";
+            }else {
+                result = msg.obj.toString();
+            }
+            Toast.makeText(ZoneActivity.this, result, Toast.LENGTH_SHORT).show();
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,8 +109,9 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
                        complete();
                        break;
                     case R.id.add_zoneimage:
-                        photo=0;
-                        chooseimage();
+                        Toast.makeText(this,"服务器正在完善中，敬请期待",Toast.LENGTH_SHORT).show();
+//                        photo=0;
+//                        chooseimage();
                         break;
                     /*case R.id.button:
                         photo=0;
@@ -106,7 +133,40 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
                 name=cursor.getString(cursor.getColumnIndex("name"));
             }
             cursor.close();
-            Zone zone=new Zone(userName,name,sdf.format(new Date()),content+"n:n"+imagePath1,R.mipmap.ic_launcher,null);
+            //上传数据
+            String originAddress = "http://"+ GsonTools.ip+":8080/Test/QaUpServlet";
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put(Zone.USERNAME,userName);
+            params.put(Zone.NAME,name);
+            params.put(Zone.TIME,sdf.format(new Date()));
+            params.put(Zone.CONTENT,content);
+            params.put(Zone.AAA,"2");      //代表空间端上传
+            KLog.d("成功上传");
+            try {
+                //构造完整URL
+                String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
+                //发送请求
+                HttpUtil.sendHttpRequest(compeletedURL, new HttpCallbackListener() {
+                    @Override
+                    public void onFinish(String response) {
+                        Message message = new Message();
+                        message.obj = response;
+                        mHandler1.sendMessage(message);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Message message = new Message();
+                        message.obj = e.toString();
+                        mHandler1.sendMessage(message);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            KLog.d("上传部分运行完了");
+
+            Zone zone=new Zone(userName,name,sdf.format(new Date()),content,R.mipmap.ic_launcher,"one");
             Log.d("存入的是",imagePath1);
             zone.save();
            /*Log.d("ZoneActivity",userName);

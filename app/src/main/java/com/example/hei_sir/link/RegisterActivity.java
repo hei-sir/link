@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -16,7 +18,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hei_sir.link.helper.GsonTools;
+
 import org.litepal.crud.DataSupport;
+
+import java.util.HashMap;
 
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
@@ -30,7 +36,28 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     String[] identitys={"老师","学生"};
     String[] gradeses={"1","2","3","4","5","6","7","8","9","10","11","12"};
     String[] classeses={"1","2","3","4","5","6","7","8","9","10"};
+    private String originAddress = "http://"+ GsonTools.ip+":8080/Test/LoginServlet";
     private String uidentity,ugrades,uclasses;
+
+    Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String result = "";
+            if ("OK".equals(msg.obj.toString())){
+                result = "success";
+                Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(RegisterActivity.this, EnterActivity.class);
+                startActivity(intent);
+                finish();
+            }else if ("Wrong".equals(msg.obj.toString())){
+                result = "fail";
+            }else {
+                result = msg.obj.toString();
+            }
+            Toast.makeText(RegisterActivity.this, result, Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,33 +162,66 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             String spinnerid=identitys[s1];
             String spinnergr=gradeses[s2];
             String spinnercl=classeses[s3];
-            Cursor cursor= DataSupport.findBySQL("select * from User where user = ?",username);     //查询此用户名下数据库是否有值"select * from Book where name = ?","589");
-            Cursor cursor1=DataSupport.findBySQL("select * from User where school = ? and number= ?and identity = ?",school,number,spinnerid);
-            if (cursor.moveToFirst() == true) {                        //有值,提示用户名已被注册
-                Toast.makeText(RegisterActivity.this, "用户名已被注册", Toast.LENGTH_SHORT).show();
-                editTextP.setText("");
-            }else if(cursor1.moveToFirst() == true) {
-                Toast.makeText(RegisterActivity.this,"信息已存在,请确认学号（职工号）和学校信息是否无误",Toast.LENGTH_SHORT).show();
-                editschool.setText("");
-                editnumber.setText("");
-            }else{
-                User user=new User();         //无值，可以新建用户
-                user.setUser(username);
-                user.setPassword(password);
-                user.setSchool(school);
-                user.setGrade(spinnergr);
-                user.setClsses(spinnercl);
-                user.setIdentity(spinnerid);
-                user.setName(name);
-                user.setNumber(number);
-                user.save();
-                Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(RegisterActivity.this, EnterActivity.class);
-                startActivity(intent);
-                finish();
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put(User.USER, editTextP.getText().toString());
+            params.put(User.PASSWORD, editTextCT.getText().toString());
+            params.put(User.NAME, editname.getText().toString());
+            params.put(User.SCHOOL, editschool.getText().toString());
+            params.put(User.NUMBER,editnumber.getText().toString());
+            params.put(User.IDENTITY,spinnerid);
+            params.put(User.GRADE,spinnergr);
+            params.put(User.CLSSES,spinnercl);
+
+            params.put(User.STATUS,"0");
+            try {
+                //构造完整URL
+                String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
+                //发送请求
+                HttpUtil.sendHttpRequest(compeletedURL, new HttpCallbackListener() {
+                    @Override
+                    public void onFinish(String response) {
+                        Message message = new Message();
+                        message.obj = response;
+                        mHandler.sendMessage(message);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Message message = new Message();
+                        message.obj = e.toString();
+                        mHandler.sendMessage(message);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            cursor.close();
-            cursor1.close();
+//            Cursor cursor= DataSupport.findBySQL("select * from User where user = ?",username);     //查询此用户名下数据库是否有值"select * from Book where name = ?","589");
+//            Cursor cursor1=DataSupport.findBySQL("select * from User where school = ? and number= ?and identity = ?",school,number,spinnerid);
+//            if (cursor.moveToFirst() == true) {                        //有值,提示用户名已被注册
+//                Toast.makeText(RegisterActivity.this, "用户名已被注册", Toast.LENGTH_SHORT).show();
+//                editTextP.setText("");
+//            }else if(cursor1.moveToFirst() == true) {
+//                Toast.makeText(RegisterActivity.this,"信息已存在,请确认学号（职工号）和学校信息是否无误",Toast.LENGTH_SHORT).show();
+//                editschool.setText("");
+//                editnumber.setText("");
+//            }else{
+//                User user=new User();         //无值，可以新建用户
+//                user.setUser(username);
+//                user.setPassword(password);
+//                user.setSchool(school);
+//                user.setGrade(spinnergr);
+//                user.setClsses(spinnercl);
+//                user.setIdentity(spinnerid);
+//                user.setName(name);
+//                user.setNumber(number);
+//                user.save();
+//                Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(RegisterActivity.this, EnterActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//            cursor.close();
+//            cursor1.close();
             pd.dismiss();
         }
     }
