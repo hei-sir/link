@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public class GsonTools {
-    public  static String ip="192.168.0.6";
+    public  static String ip="192.168.0.8";
     private static Gson mGson = new Gson();
 
     /**

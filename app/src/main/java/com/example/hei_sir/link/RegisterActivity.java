@@ -139,6 +139,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(this, "密码不能为空！", Toast.LENGTH_SHORT).show();
             editTextCT.requestFocus();//使输入框失去焦点
             return;
+        } else if(password.length()<8){
+            Toast.makeText(this, "密码长度不能小于8位！", Toast.LENGTH_SHORT).show();
+            editTextCT.requestFocus();//使输入框失去焦点
+            return;
         } else if (TextUtils.isEmpty(name)) {//当验证码没有输入时
             Toast.makeText(this, "姓名不能为空！", Toast.LENGTH_SHORT).show();
             editname.requestFocus();//使输入框失去焦点

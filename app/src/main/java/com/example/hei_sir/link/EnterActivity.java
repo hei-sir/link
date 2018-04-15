@@ -42,7 +42,7 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
 
     private EditText editPerson, editCode,et_password,et_username;
     private TextView textViewR;
-    private Button btn;
+    private Button btn,bfp;
     private boolean autoLogin = false;
     public static String currentUsername,username,school,grade,clsses,sname1,tname1,qsname1,qtname1,school2,grade2,clsses2;
     private String currentPassword;
@@ -111,8 +111,8 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
     private void init() {
         btn = (Button) findViewById(R.id.bn_common_login);
         btn.setOnClickListener(this);
-        //btn = (Button) findViewById(R.id.bn_forget_password);
-        //btn.setOnClickListener(this);
+        bfp = (Button) findViewById(R.id.bn_forget_password);
+        bfp.setOnClickListener(this);
         editCode = (EditText) findViewById(R.id.et_password);
         editPerson = (EditText) findViewById(R.id.et_username);
         textViewR = (TextView) findViewById(R.id.tv_register);
@@ -137,6 +137,11 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
             case R.id.tv_register:  //注册按钮
                 Intent intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
+                finish();
+                break;
+            case R.id.bn_forget_password:
+                Intent intent1=new Intent(this,ForgetPasswordActivity.class);
+                startActivity(intent1);
                 finish();
                 break;
             /*case R.id.iv_qq_login:  //QQ登录

@@ -74,7 +74,17 @@
         <activity android:name=".Qa2sActivity" />
         <activity android:name=".ZoneActivity" />
         <activity android:name=".T1examActivity" />
-        <activity android:name=".T2examActivity"></activity>
+        <activity android:name=".T2examActivity" />
+        <activity
+            android:name=".ForgetPasswordActivity"
+            android:label="@string/title_activity_forget_password" />
+        <activity
+            android:name=".ForgetPassword1Activity"
+            android:label="@string/title_activity_forget_password1" />
+        <activity
+            android:name=".ForgetPassword2Activity"
+            android:label="@string/title_activity_forget_password2" />
+        <activity android:name=".ForgetPassword3Activity"></activity>
     </application>
 
 </manifest>
