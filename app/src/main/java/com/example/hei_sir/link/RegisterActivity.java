@@ -54,8 +54,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 result = "fail";
             }else {
                 result = msg.obj.toString();
+                Toast.makeText(RegisterActivity.this, getString(R.string.error_invalid_internet), Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(RegisterActivity.this, result, Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -80,8 +80,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         button.setOnClickListener(this);
         enterText = (TextView) findViewById(R.id.tv_enter);//右上角登陆键
         enterText.setOnClickListener(this);
-        returnImage = (ImageView) findViewById(R.id.iv_return);//返回键
-        returnImage.setOnClickListener(this);
        // SMSBtn = (Button) findViewById(R.id.bn_sms_code);
         //SMSBtn.setOnClickListener(this);
     }
@@ -93,9 +91,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 register();
                 break;
             case R.id.tv_enter:
-                returnEnter();
-                break;
-            case R.id.iv_return:
                 returnEnter();
                 break;
             /*case R.id.bn_sms_code:
@@ -135,7 +130,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(this, "账户不能为空！", Toast.LENGTH_SHORT).show();
             editTextP.requestFocus();//使输入框失去焦点
             return;
-        } else if (TextUtils.isEmpty(password)) {//当注册密码没有输入时
+        }else if(username.length()<6){      //用户名小于6位
+            Toast.makeText(this, "用户名长度不能小于6位！", Toast.LENGTH_SHORT).show();
+            editTextP.requestFocus();//使输入框失去焦点
+            return;
+        }else if (TextUtils.isEmpty(password)) {//当注册密码没有输入时
             Toast.makeText(this, "密码不能为空！", Toast.LENGTH_SHORT).show();
             editTextCT.requestFocus();//使输入框失去焦点
             return;
@@ -155,10 +154,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(this, "学号/职工号不能为空！", Toast.LENGTH_SHORT).show();
             editnumber.requestFocus();//使输入框失去焦点
             return;
-        }else {          //如果全部都已填写，则进行注册操作
+        } else {          //如果全部都已填写，则进行注册操作
             final ProgressDialog pd = new ProgressDialog(this);
             pd.setMessage("正在注册……");
             pd.show();
+
 
             int s1=identity.getSelectedItemPosition();                          //注册的操作放在此处
             int s2=grades.getSelectedItemPosition();

@@ -60,6 +60,7 @@
         android:layout_margin="16dp"
         android:id="@+id/fab"
         app:backgroundTint="#ffc107"
+        android:src="@drawable/add"
         app:layout_anchor="@id/appBar"
         app:layout_anchorGravity="bottom|end"/>
 

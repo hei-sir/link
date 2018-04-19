@@ -66,8 +66,8 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
                 et_password.setText("");
             }else {
                 result = msg.obj.toString();
+                Toast.makeText(EnterActivity.this,getString(R.string.error_invalid_internet),Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(EnterActivity.this, result, Toast.LENGTH_SHORT).show();
         }
     };
 

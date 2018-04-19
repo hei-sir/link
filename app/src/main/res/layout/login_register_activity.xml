@@ -1,38 +1,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f2f2f2"
+    android:background="#ffffff"
     android:orientation="vertical" >
 
-    <LinearLayout style="@style/top_nav">
 
-        <ImageView
-            android:id="@+id/iv_return"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:src="@drawable/ico_commen_back" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="40dp"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="0dp"
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:textColor="#29b6f6"
+            android:textSize="20dp"
+            android:text="Link"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="注册"
-            android:textSize="16sp" />
-
+            android:paddingTop="10dp"
+            android:textSize="22dp"
+            android:textColor="#000000"/>
         <TextView
-            android:id="@+id/tv_enter"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="登录"
-            android:textColor="#404040"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:text="请谨慎填写学校班级学号等信息，保证信息真实有效"
+            android:textSize="10dp"
+            android:paddingBottom="0dp"/>
 
-    <View style="@style/common_line_gray_90"/>
+
+    </LinearLayout>
 
     <!-- 注册 -->
 
@@ -41,14 +44,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="10dp"
         android:background="#ffffff"
         android:orientation="vertical" >
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="#07a6e6" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -344,15 +343,26 @@
 
     <Button
         android:id="@+id/bn_immediateRegistration"
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginHorizontal="40dp"
         android:background="@drawable/bg_radius_sign_btn"
         android:text="立即注册"
         android:textColor="#ffffff"
         android:textSize="15sp"
         />
+    <TextView
+        android:id="@+id/tv_enter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
+        android:layout_gravity="right"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="58dp"
+        android:text="返回登录"
+        android:textColor="#4ebeea"
+        android:textSize="15sp" />
 
 
 

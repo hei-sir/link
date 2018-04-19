@@ -122,7 +122,9 @@ public class ForgetPasswordActivity extends AppCompatActivity implements LoaderC
         setContentView(R.layout.activity_forget_password);
         // Set up the login form.
         init();
+
     }
+
 
 
     private void init(){

@@ -1,46 +1,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f2f2f2"
+    android:background="#ffffff"
     android:orientation="vertical" >
 
-    <LinearLayout style="@style/top_nav" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginHorizontal="60dp"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="45dp"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="登录"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_register"
+            android:paddingTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="注册"
-            android:textColor="#404040"
-            android:textSize="14sp" />
-    </LinearLayout>
-    <View style="@style/common_line_gray_90"/>
-    <LinearLayout
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="30dp">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:src="@mipmap/ic_launcher" />
+            android:textColor="#29b6f6"
+            android:textSize="20dp"
+            android:text="Link"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="欢迎登录"
+            android:paddingTop="10dp"
+            android:textSize="22dp"
+            android:textColor="#000000"/>
+
 
     </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,10 +41,7 @@
         android:background="#ffffff"
         android:orientation="vertical" >
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="#07a6e6" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,10 +71,9 @@
 
         <View
             android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:layout_marginLeft="28dp"
-            android:layout_marginRight="28dp"
-            android:background="#d9d9d9" />
+            android:layout_height="2px"
+            android:layout_marginHorizontal="22dp"
+            android:background="#000000" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -115,6 +101,11 @@
                 android:textSize="14sp" />
 
         </LinearLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:layout_marginHorizontal="22dp"
+            android:background="#000000" />
     </LinearLayout>
 
     <LinearLayout
@@ -149,12 +140,23 @@
         android:id="@+id/bn_common_login"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginHorizontal="50dp"
         android:background="@drawable/bg_radius_sign_btn"
         android:text="登  录"
         android:textColor="#ffffff"
         android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
+        android:layout_gravity="right"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="55dp"
+        android:text="新用户注册"
+        android:textColor="#4ebeea"
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/bn_forget_password"
@@ -164,7 +166,7 @@
         android:layout_gravity="right"
         android:layout_marginRight="42dp"
         android:background="@null"
-        android:text="忘记密码?"
+        android:text="忘记密码"
         android:textColor="#4ebeea"
         android:textSize="13sp" />
 

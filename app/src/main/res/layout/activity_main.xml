@@ -96,12 +96,7 @@
                         android:textSize="18sp"
                         android:textColor="#000000"
                         android:text="课程表" />
-                    <ImageView
-                        android:id="@+id/cardImg1"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
-                        android:src="@mipmap/ic_launcher" />
+
                 </RelativeLayout>
                 <View
                     android:layout_width="match_parent"
@@ -112,7 +107,7 @@
                 <ImageView
                     android:id="@+id/cardContent1"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="90dp"
                     android:src="@mipmap/ic_launcher"
                     android:scaleType="centerCrop"/>
                     </LinearLayout>
@@ -140,12 +135,7 @@
                         android:textSize="18sp"
                         android:textColor="#000000"
                         android:text="成绩中心" />
-                    <ImageView
-                        android:id="@+id/cardImg2"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
-                        android:src="@mipmap/ic_launcher" />
+
                 </RelativeLayout>
                 <View
                     android:layout_width="match_parent"
@@ -156,7 +146,7 @@
                 <ImageView
                     android:id="@+id/cardContent2"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="90dp"
                     android:src="@mipmap/ic_launcher"
                     android:scaleType="centerCrop"/>
             </LinearLayout>
@@ -184,12 +174,7 @@
                             android:textSize="18sp"
                             android:textColor="#000000"
                             android:text="老师问答" />
-                        <ImageView
-                            android:id="@+id/cardImg3"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_launcher" />
+
                     </RelativeLayout>
                     <View
                         android:layout_width="match_parent"
@@ -200,7 +185,7 @@
                     <ImageView
                         android:id="@+id/cardContent3"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="90dp"
                         android:src="@mipmap/ic_launcher"
                         android:scaleType="centerCrop"/>
                 </LinearLayout>
