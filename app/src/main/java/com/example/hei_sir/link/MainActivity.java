@@ -3,6 +3,8 @@ package com.example.hei_sir.link;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
@@ -102,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         navView.setCheckedItem(R.id.nav_main);
         name=(TextView) findViewById(R.id.username);
-        CircleImageView icon=(CircleImageView)findViewById(R.id.icon_image);
         Intent intent=getIntent();
         userName=intent.getStringExtra("extra_data");
         init();
@@ -307,7 +308,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.about:
-                Toast.makeText(MainActivity.this, "版本号：1", Toast.LENGTH_SHORT).show();
+                PackageInfo pkg = null;
+                try {
+                    pkg = getPackageManager().getPackageInfo(getApplication().getPackageName(), 0);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                String appName = pkg.applicationInfo.loadLabel(getPackageManager()).toString();
+
+                String versionName = pkg.versionName;
+                Toast.makeText(MainActivity.this, "Version:   "+versionName, Toast.LENGTH_SHORT).show();
                 default:
         }
         return true;

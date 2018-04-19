@@ -49,7 +49,7 @@ public class Exam2Activity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         collapsingToolbarLayout.setTitle(examExam);
-        Glide.with(this).load(R.drawable.qa_green).into(imageView);
+        Glide.with(this).load(R.drawable.exam).into(imageView);
         List<Exam> exams= DataSupport.where("examId = ? and name = ?",examExam,examName).find(Exam.class);
         for (Exam exam1:exams) {
             rank.setText(exam1.getRank());

@@ -72,7 +72,7 @@ public class Exam2tActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         collapsingToolbarLayout.setTitle(examExam);
-        Glide.with(this).load(R.drawable.qa_green).into(imageView);
+        Glide.with(this).load(R.drawable.exam).into(imageView);
 
 
         Cursor cursor= DataSupport.findBySQL("select * from Exam where examId=?",examExam);

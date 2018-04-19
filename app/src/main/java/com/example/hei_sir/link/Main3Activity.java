@@ -1,6 +1,8 @@
 package com.example.hei_sir.link;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
@@ -117,7 +119,16 @@ public class Main3Activity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.about:
-                Toast.makeText(Main3Activity.this, "版本号：1", Toast.LENGTH_SHORT).show();
+                PackageInfo pkg = null;
+                try {
+                    pkg = getPackageManager().getPackageInfo(getApplication().getPackageName(), 0);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                String appName = pkg.applicationInfo.loadLabel(getPackageManager()).toString();
+
+                String versionName = pkg.versionName;
+                Toast.makeText(Main3Activity.this, "Version:   "+versionName, Toast.LENGTH_SHORT).show();
             default:
         }
         return true;
