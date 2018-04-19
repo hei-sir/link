@@ -45,7 +45,7 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
     private Button btn,bfp;
     private boolean autoLogin = false;
     public static String currentUsername,username,school,grade,clsses,sname1,tname1,qsname1,qtname1,school2,grade2,clsses2;
-    private String currentPassword;
+    private String currentPassword,sc,gr,cl,ide,examname;
     private boolean progressShow;
     //用于接收Http请求的servlet的URL地址，请自己定义
     private String originAddress = "http://"+GsonTools.ip+":8080/Test/LoginServlet";
@@ -465,6 +465,77 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
                     }while (cursor.moveToNext());
                 }
                 cursor3.close();
+
+                //获取成绩数据
+                String path4 = "http://" + GsonTools.ip + ":8080/Test/ExamServlet";
+                String jsonString4 = HttpUtils.getJsonContent(path4);//从网络获取数据
+                List<Exam> listexam = GsonTools.stringToList(jsonString4, Exam.class);
+
+                for (Exam exam : listexam) {
+                    String lexamId;
+                    Cursor cursor1 = DataSupport.findBySQL("select * from User where user = ?", et_username.getText().toString());
+                    KLog.d("进入问答循环：username=" + et_username.getText().toString());
+                    if (cursor1.moveToFirst()) {
+                        cursor1.moveToFirst();
+                        examname = cursor1.getString(cursor1.getColumnIndex("name"));
+                        KLog.d(examname);
+                        sc=cursor1.getString(cursor1.getColumnIndex("school"));
+                        gr=cursor1.getString(cursor1.getColumnIndex("grade"));
+                        cl=cursor1.getString(cursor1.getColumnIndex("clsses"));
+                        ide=cursor1.getString(cursor1.getColumnIndex("identity"));
+                    }
+                    cursor1.close();
+                    if (ide.equals("学生")) {
+                        Cursor c = DataSupport.findBySQL("select * from Exam where userId = ? and examId=?", userName, exam.getExamId());        //搜索本地账户是否有数据
+                        KLog.d("进入问答循环：username=" + userName + "examId" + exam.getExamId());
+                        if (c.moveToFirst() == false) {
+                            //无值，可以新建成绩
+                            KLog.d("判断数据库无值");
+                            Exam exam1 = new Exam(exam.getChinese(), exam.getMath(), exam.getEnglish(), exam.getPolitics(), exam.getPhysics(), exam.getChemical(), exam.getScore(), exam.getExamId(), exam.getUserId(), exam.getName(), exam.getRank(), exam.getTime());
+                            KLog.d("新建" + exam.getExamId());
+                            exam1.save();
+                        } else {
+                            c.moveToFirst();
+                            KLog.d("判断数据库有值");
+                            List<Exam> exams = DataSupport.findAll(Exam.class);
+                            for (Exam exam1 : exams) {
+                                KLog.d(exam1.getExamId() + "已存在");
+                            }
+                        }
+                        Log.d("完成", "全部");
+                        c.close();
+                    }else if(ide.equals("老师")){
+                        Cursor cursor4=DataSupport.findBySQL("select * from User where school=? and grade = ? and clsses = ?",sc,gr,cl);
+                        if (cursor4.moveToFirst()==false){
+                            KLog.d("该班级没有同学");
+                        }else{
+                            cursor4.moveToFirst();
+                            do {
+                                KLog.d(cursor4.getString(cursor4.getColumnIndex("user")));
+                                if (exam.getUserId().equals(cursor4.getString(cursor4.getColumnIndex("user")))){
+                                    Cursor c = DataSupport.findBySQL("select * from Exam where userId = ? and examId=?",cursor4.getString(cursor4.getColumnIndex("user")) , exam.getExamId());        //搜索本地账户是否有数据
+                                    KLog.d("进入问答循环：username=" + userName + "examId" + exam.getExamId());
+                                    if (c.moveToFirst() == false) {
+                                        //无值，可以新建成绩
+                                        KLog.d("判断数据库无值");
+                                        Exam exam1 = new Exam(exam.getChinese(), exam.getMath(), exam.getEnglish(), exam.getPolitics(), exam.getPhysics(), exam.getChemical(), exam.getScore(), exam.getExamId(), exam.getUserId(), exam.getName(), exam.getRank(), exam.getTime());
+                                        KLog.d("新建" + exam.getExamId());
+                                        exam1.save();
+                                    } else {
+                                        c.moveToFirst();
+                                        KLog.d("判断数据库有值");
+                                        List<Exam> exams = DataSupport.findAll(Exam.class);
+                                        for (Exam exam1 : exams) {
+                                            KLog.d(exam1.getExamId() + "已存在");
+                                        }
+                                    }
+                                    Log.d("完成", "全部");
+                                    c.close();
+                                }
+                            }while (cursor4.moveToNext());
+                        }
+                    }
+                }
 
 
 

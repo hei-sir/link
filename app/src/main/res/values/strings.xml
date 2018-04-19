@@ -95,4 +95,5 @@
     <string name="error_invalid_number">学号信息错误</string>
     <string name="title_activity_forget_password1">找回密码</string>
     <string name="title_activity_forget_password2">Sign in</string>
+    <string name="title_activity_exam_add">Sign in</string>
 </resources>

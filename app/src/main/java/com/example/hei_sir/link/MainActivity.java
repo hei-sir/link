@@ -210,9 +210,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.cardView2:
-                Intent intent3=new Intent(MainActivity.this,T1examActivity.class);       //进入教师qa问答系统
-                intent3.putExtra("extra_data",userName);
-                startActivity(intent3);
+                Cursor cursor3= DataSupport.findBySQL("select * from User where user = ? and identity = ?",userName,"老师");
+                if (cursor3.moveToFirst() == true) {
+                    Cursor cursor1=DataSupport.findBySQL("select * from User where user = ?",userName);
+                    String school,grade,clsses;
+                    cursor1.moveToFirst();
+                    school=cursor1.getString(cursor1.getColumnIndex("school"));
+                    grade=cursor1.getString(cursor1.getColumnIndex("grade"));
+                    clsses=cursor1.getString(cursor1.getColumnIndex("clsses"));
+                    cursor1.close();
+                    Cursor cursor2=DataSupport.findBySQL("select * from User where school = ? and grade = ? and clsses = ? and identity = ?",school,grade,clsses,"学生");
+                    if (cursor2.moveToFirst()){
+                        Intent intent1=new Intent(MainActivity.this,Exam1tActivity.class);       //进入教师成绩系统
+                        intent1.putExtra("extra_data",userName);
+                        startActivity(intent1);
+                    }else {
+                        Toast.makeText(this,"您所在班级目前没有学生注册",Toast.LENGTH_SHORT).show();
+                    }
+                    cursor2.close();
+                } else {
+                    Cursor cursor1=DataSupport.findBySQL("select * from User where user = ?",userName);
+                    String school,grade,clsses;
+                    cursor1.moveToFirst();
+                    school=cursor1.getString(cursor1.getColumnIndex("school"));
+                    grade=cursor1.getString(cursor1.getColumnIndex("grade"));
+                    clsses=cursor1.getString(cursor1.getColumnIndex("clsses"));
+                    cursor1.close();
+                    Cursor cursor2=DataSupport.findBySQL("select * from User where school = ? and grade = ? and clsses = ? and identity = ?",school,grade,clsses,"老师");
+                    if (cursor2.moveToFirst()){
+                        Intent intent2=new Intent(MainActivity.this,Exam1Activity.class);      //进入学生成绩系统
+                        intent2.putExtra("extra_data",userName);
+                        startActivity(intent2);
+                    }else {
+                        Toast.makeText(this,"您所在班级目前没有老师注册",Toast.LENGTH_SHORT).show();
+                    }
+                    cursor2.close();
+                }
+                cursor3.close();
                 break;
             case R.id.cardView3:
 

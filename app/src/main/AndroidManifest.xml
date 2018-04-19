@@ -72,9 +72,7 @@
         <activity android:name=".Qa2tActivity" />
         <activity android:name=".Qa1sActivity" />
         <activity android:name=".Qa2sActivity" />
-        <activity android:name=".ZoneActivity" />
-        <activity android:name=".T1examActivity" />
-        <activity android:name=".T2examActivity" />
+        <activity android:name=".ZoneActivity" android:label="fa"/>
         <activity
             android:name=".ForgetPasswordActivity"
             android:label="@string/title_activity_forget_password" />
@@ -84,7 +82,20 @@
         <activity
             android:name=".ForgetPassword2Activity"
             android:label="@string/title_activity_forget_password2" />
-        <activity android:name=".ForgetPassword3Activity"></activity>
+        <activity android:name=".ForgetPassword3Activity" />
+        <activity
+            android:name=".Exam2Activity"
+            android:theme="@style/ExamActivityTheme" />
+        <activity android:name=".Exam1Activity"
+            android:label="个人成绩"/>
+        <activity android:name=".Exam1tActivity"
+            android:label="班级成绩"/>
+        <activity
+            android:name=".Exam2tActivity"
+            android:theme="@style/ExamActivityTheme" />
+        <activity
+            android:name=".ExamAddActivity"
+            android:label="@string/title_activity_exam_add"></activity>
     </application>
 
 </manifest>

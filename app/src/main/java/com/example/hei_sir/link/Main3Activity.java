@@ -144,7 +144,7 @@ public class Main3Activity extends AppCompatActivity {
                 Info School = new Info("学校", cursor1.getString(cursor1.getColumnIndex("school")));
                 Info Grade = new Info("年级", cursor1.getString(cursor1.getColumnIndex("grade")));
                 Info Class = new Info("班级", cursor1.getString(cursor1.getColumnIndex("clsses")));
-                Info Num = new Info("学号", cursor1.getString(cursor1.getColumnIndex("number")));
+                Info Num = new Info("学号/工号", cursor1.getString(cursor1.getColumnIndex("number")));
                 infoList.add(User);
                 infoList.add(Name);
                 infoList.add(School);
