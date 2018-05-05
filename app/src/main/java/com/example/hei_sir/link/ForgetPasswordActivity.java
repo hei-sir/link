@@ -88,7 +88,6 @@ public class ForgetPasswordActivity extends AppCompatActivity implements LoaderC
                 Intent intent = new Intent(ForgetPasswordActivity.this, ForgetPassword1Activity.class);  //进入主界面
                 intent.putExtra("extra_data",mEmailView.getText().toString());
                 startActivity(intent);  //开始跳转
-                finish();  //finish掉此界面
 
 
 

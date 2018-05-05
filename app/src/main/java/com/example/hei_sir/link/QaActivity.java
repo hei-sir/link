@@ -220,10 +220,7 @@ public class QaActivity extends AppCompatActivity {
     }
 
     public void exit() {
-        Intent intent = new Intent(this, MainActivity.class);  //进入主界面
-        intent.putExtra("extra_data",userName);
-        startActivity(intent);  //开始跳转
-        finish();  //finish掉此界面
+        QaActivity.this.finish();
     }
 }
 

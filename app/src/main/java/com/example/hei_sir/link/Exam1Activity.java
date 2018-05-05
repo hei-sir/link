@@ -169,9 +169,6 @@ public class Exam1Activity extends AppCompatActivity {
     }
 
     public void exit() {
-        Intent intent = new Intent(this, MainActivity.class);  //进入主界面
-        intent.putExtra("extra_data",userName);
-        startActivity(intent);  //开始跳转
-        finish();  //finish掉此界面
+        Exam1Activity.this.finish();
     }
 }

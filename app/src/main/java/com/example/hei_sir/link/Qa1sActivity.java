@@ -49,7 +49,6 @@ public class Qa1sActivity extends AppCompatActivity {
                 Intent intent = new Intent(Qa1sActivity.this,Qa2sActivity.class);
                 intent.putExtra("extra_data",userName);
                 startActivity(intent);
-                finish();
             }
         });
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);

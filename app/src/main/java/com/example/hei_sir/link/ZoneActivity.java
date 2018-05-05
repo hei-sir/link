@@ -100,10 +100,7 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.iv_return:
-                        Intent intent=new Intent(ZoneActivity.this,Main2Activity.class);
-                        intent.putExtra("extra_data",userName);
-                        startActivity(intent);  //开始跳转
-                        finish();
+                        ZoneActivity.this.finish();
                         break;
                     case R.id.complete:
                        complete();

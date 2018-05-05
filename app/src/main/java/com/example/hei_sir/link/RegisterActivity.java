@@ -115,9 +115,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void returnEnter() {
-        Intent intent = new Intent(this,EnterActivity.class);
-        startActivity(intent);
-        finish();
+        RegisterActivity.this.finish();
     }
 
     public void register() {

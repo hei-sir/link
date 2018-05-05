@@ -86,7 +86,6 @@ public class Main2Activity extends AppCompatActivity {
                 Intent intent = new Intent(Main2Activity.this,ZoneActivity.class);
                 intent.putExtra("extra_data",userName);
                 startActivity(intent);
-                finish();
             }
         });
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -150,7 +149,7 @@ public class Main2Activity extends AppCompatActivity {
                         Intent intent1 = new Intent(Main2Activity.this, Main3Activity.class);  //进入主界面
                         intent1.putExtra("extra_data",userName);
                         startActivity(intent1);  //开始跳转
-                        finish();  //finish掉此界面
+                        Main2Activity.this.finish();  //finish掉此界面
                         break;
                     case R.id.nav_main:
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
@@ -158,12 +157,11 @@ public class Main2Activity extends AppCompatActivity {
                         Intent intent = new Intent(Main2Activity.this, MainActivity.class);  //进入主界面
                         intent.putExtra("extra_data",userName);
                         startActivity(intent);  //开始跳转
-                        finish();  //finish掉此界面
+                        Main2Activity.this.finish();  //finish掉此界面
                         break;
                     case R.id.nav_zone:
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
                         //Toast.makeText(Main2Activity.this, "这是班级天地", Toast.LENGTH_SHORT).show();
-                        finish();
                         break;
                 }
                 return true;

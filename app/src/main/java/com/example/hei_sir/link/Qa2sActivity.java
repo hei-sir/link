@@ -99,7 +99,7 @@ public class Qa2sActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_return:
-                finish();
+                Qa2sActivity.this.finish();
                 break;
             case R.id.button:
                 question();
@@ -156,10 +156,7 @@ public class Qa2sActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("Qa2sActivity",sdf.format( new Date()));
             Log.d("Qa2sActivity",qaContent.getText().toString());
             Toast.makeText(this,"提问成功",Toast.LENGTH_SHORT).show();
-            Intent intent=new Intent(this,Qa1sActivity.class);
-            intent.putExtra("extra_data",userName);
-            startActivity(intent);
-            finish();
+            Qa2sActivity.this.finish();
         }
 
     }

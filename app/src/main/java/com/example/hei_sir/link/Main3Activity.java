@@ -90,7 +90,7 @@ public class Main3Activity extends AppCompatActivity {
                         Intent intent = new Intent(Main3Activity.this, MainActivity.class);  //进入主界面
                         intent.putExtra("extra_data",userName);
                         startActivity(intent);  //开始跳转
-                        finish();  //finish掉此界面
+                        Main3Activity.this.finish();  //finish掉此界面
                         break;
                     case R.id.nav_zone:
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
@@ -99,7 +99,7 @@ public class Main3Activity extends AppCompatActivity {
                         intent1.putExtra("extra_data",userName);
                         intent1.putExtra("extra_num","0");
                         startActivity(intent1);  //开始跳转
-                        finish();  //finish掉此界面
+                        Main3Activity.this.finish();  //finish掉此界面
 
                         break;
                 }return true;

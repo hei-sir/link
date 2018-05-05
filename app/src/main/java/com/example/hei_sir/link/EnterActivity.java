@@ -137,12 +137,10 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
             case R.id.tv_register:  //注册按钮
                 Intent intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
-                finish();
                 break;
             case R.id.bn_forget_password:
                 Intent intent1=new Intent(this,ForgetPasswordActivity.class);
                 startActivity(intent1);
-                finish();
                 break;
             /*case R.id.iv_qq_login:  //QQ登录
                 Toast.makeText(this, "QQ登录", Toast.LENGTH_SHORT).show();

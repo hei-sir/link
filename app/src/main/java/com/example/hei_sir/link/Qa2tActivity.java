@@ -170,10 +170,7 @@ public class Qa2tActivity extends AppCompatActivity implements View.OnClickListe
                     DataSupport.updateAll(Qa.class,values," tname=? and sname=? and content=?",userName,qasname,qaContent);
             Toast.makeText(this,"回答成功",Toast.LENGTH_SHORT).show();
 
-            Intent intent=new Intent(this,QaActivity.class);
-            intent.putExtra("extra_data",qatname);
-            startActivity(intent);
-            finish();
+            Qa2tActivity.this.finish();
         }
     }
 }

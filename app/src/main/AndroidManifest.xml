@@ -64,14 +64,6 @@
         <activity
             android:name=".FromAddActivity"
             android:label="@string/title_activity_from_add" />
-        <activity android:name=".HomeWorkActivity">
-            <intent-filter>
-                <action android:name="com.example.hei_sir.link.HOMEWORK" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.MY_HOMEWORK" />
-            </intent-filter>
-        </activity>
         <activity android:name=".QaActivity" />
         <activity android:name=".Qa2tActivity" />
         <activity android:name=".Qa1sActivity" />

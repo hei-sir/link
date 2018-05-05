@@ -116,8 +116,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //Toast.makeText(MainActivity.this, "这是个人信息", Toast.LENGTH_SHORT).show();
                         Intent intent1 = new Intent(MainActivity.this, Main3Activity.class);  //进入主界面
                         intent1.putExtra("extra_data",userName);
-                        finish();
                         startActivity(intent1);  //开始跳转
+                        MainActivity.this.finish();
                     break;
                     case R.id.nav_main:
                         mDrawerLayout.closeDrawers();                       //关闭滑动菜单
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         intent.putExtra("extra_data",userName);
                         intent.putExtra("extra_num","0");
                         startActivity(intent);  //开始跳转
-                        finish();
+                        MainActivity.this.finish();
                         break;
                     default:
                 }return true;

@@ -69,9 +69,7 @@ public class FromAddActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void returnEnter() {
-        Intent intent = new Intent(this,FormActivity.class);
-        startActivity(intent);
-        finish();
+        FromAddActivity.this.finish();
     }
 
     public void add() {
@@ -122,9 +120,7 @@ public class FromAddActivity extends AppCompatActivity implements View.OnClickLi
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {               //退出确认
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent1=new Intent(FromAddActivity.this, FormActivity.class);
-            startActivity(intent1);
-            finish();
+            FromAddActivity.this.finish();
             return false;
         }
         return super.onKeyDown(keyCode, event);

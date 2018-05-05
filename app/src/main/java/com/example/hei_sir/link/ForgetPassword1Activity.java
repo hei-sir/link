@@ -89,7 +89,6 @@ public class ForgetPassword1Activity extends AppCompatActivity implements Loader
                 intent.putExtra("extra_data",user);
                 intent.putExtra("extra_pw",mNumberView.getText().toString());
                 startActivity(intent);  //开始跳转
-                finish();  //finish掉此界面
 
 
 

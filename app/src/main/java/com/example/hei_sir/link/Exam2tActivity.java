@@ -62,7 +62,7 @@ public class Exam2tActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Exam2tActivity.this,ExamAddActivity.class);
-                finish();
+                startActivity(intent);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -110,7 +110,7 @@ public class Exam2tActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case android.R.id.home:
-                finish();
+                Exam2tActivity.this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

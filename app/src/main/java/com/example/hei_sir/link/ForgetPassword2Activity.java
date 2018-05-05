@@ -84,7 +84,6 @@ public class ForgetPassword2Activity extends AppCompatActivity implements Loader
                 //成功代码
                 Intent intent = new Intent(ForgetPassword2Activity.this, ForgetPassword3Activity.class);  //进入主界面
                 startActivity(intent);  //开始跳转
-                finish();  //finish掉此界面
 
 
 
