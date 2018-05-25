@@ -43,7 +43,7 @@ public class GsonTools {
      * @param <T>
      * @return
      */
-    public static <T> List<T> stringToList(String json , Class<T> cls  ){
+    public static <T> List<T> stringToList(String json , Class<T> cls  ){             //转换jsonlist
         Gson gson = new Gson();
         List<T> list = new ArrayList<T>();
         JsonArray array = new JsonParser().parse(json).getAsJsonArray();
@@ -52,7 +52,7 @@ public class GsonTools {
         }
         return list ;
     }
-    public static <T> T getPerson(String jsonString, Class<T> cls) {
+    public static <T> T getPerson(String jsonString, Class<T> cls) {             //转换json字符串
         T t = null;
         try {
             Gson gson = new Gson();

@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.socks.library.KLog;
+
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
 
@@ -40,6 +42,18 @@ public class FormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
+        init();
+        FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FormActivity.this,FromAddActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void init(){
         Mon01=(TextView)findViewById(R.id.Mon01);Mon02=(TextView)findViewById(R.id.Mon02);Mon03=(TextView)findViewById(R.id.Mon03);Mon04=(TextView)findViewById(R.id.Mon04);
         Mon05=(TextView)findViewById(R.id.Mon05);Mon06=(TextView)findViewById(R.id.Mon06);Mon07=(TextView)findViewById(R.id.Mon07);Mon08=(TextView)findViewById(R.id.Mon08);
         Mon09=(TextView)findViewById(R.id.Mon09);Mon10=(TextView)findViewById(R.id.Mon10);Mon11=(TextView)findViewById(R.id.Mon11);Mon12=(TextView)findViewById(R.id.Mon12);
@@ -73,23 +87,23 @@ public class FormActivity extends AppCompatActivity {
                 String datetime= dates[i-1].toString()+times[j-1].toString();
                 Cursor cursor= DataSupport.findBySQL("select lesson from Form where datetime = ?",datetime);     //查询此课程时间下数据库是否有值
                 if (cursor.moveToFirst() == true) {                               //有值,修改科目内容
+                    KLog.d(datetime);
                     List<Form> forms=DataSupport.where("datetime = ?",datetime).find(Form.class);
                     for(Form form:forms){
-                        datetimes[i*j-1].setText(form.getLesson());
+                        datetimes[(i-1)*12+j-1].setText(form.getLesson());
+                        KLog.d(datetimes[(i-1)*12+j-1]);
                     }
                     Toast.makeText(this, "课程表加载成功", Toast.LENGTH_SHORT).show();
                 }
 
             }
         }
+    }
 
-        FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(FormActivity.this,FromAddActivity.class);
-                startActivity(intent);
-            }
-        });
+
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        init();
     }
 }

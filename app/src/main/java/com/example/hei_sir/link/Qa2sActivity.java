@@ -8,14 +8,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hei_sir.link.helper.GsonTools;
+import com.example.hei_sir.link.helper.HttpCallbackListener;
+import com.example.hei_sir.link.helper.HttpUtil;
+import com.example.hei_sir.link.helper.JsonParser;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechListener;
+import com.iflytek.cloud.SpeechRecognizer;
+import com.iflytek.cloud.SpeechSynthesizer;
+import com.iflytek.cloud.SpeechUtility;
+import com.iflytek.cloud.ui.RecognizerDialog;
+import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.socks.library.KLog;
 
 import org.litepal.crud.DataSupport;
@@ -27,8 +42,12 @@ import java.util.HashMap;
 public class Qa2sActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static String userName;
+    private Button button2,button;
     private TextView qaTname;
     private EditText qaContent;
+    private RelativeLayout layouts;
+    private ImageView imageViews;
+    private RecognizerDialog recognizerDialog;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm E");
     private String school,grade,clsses,tname,sname;
 
@@ -57,6 +76,7 @@ public class Qa2sActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_qa2s);
         Intent intent=getIntent();
         userName=intent.getStringExtra("extra_data");
+        SpeechUtility.createUtility(Qa2sActivity.this, SpeechConstant.APPID +"=5b068ac5");
         qaTname=(TextView)findViewById(R.id.qa_name);
         qaContent=(EditText) findViewById(R.id.qa_content);
         final String content = qaContent.getText().toString().trim();
@@ -90,10 +110,41 @@ public class Qa2sActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void init(){
-        Button button = (Button) findViewById(R.id.button);
+        recognizerDialog=new RecognizerDialog(Qa2sActivity.this,listener);
+        recognizerDialog.setParameter(SpeechConstant.DOMAIN,"iat");
+        recognizerDialog.setParameter(SpeechConstant.SAMPLE_RATE,"16000");
+
+        button = (Button) findViewById(R.id.button);
         button.setOnClickListener(this);
         ImageView text = (ImageView) findViewById(R.id.iv_return);
         text.setOnClickListener(this);
+        imageViews=(ImageView)findViewById(R.id.enter_s);
+        layouts=(RelativeLayout)findViewById(R.id.rl_s);
+        imageViews.setOnClickListener(this);
+        button2=(Button)findViewById(R.id.button2);
+        button2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction()==MotionEvent.ACTION_UP){
+                    final Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(2000);  //开启睡眠两秒
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    thread.start();  //开启线程
+                }
+                if (event.getAction() ==MotionEvent.ACTION_DOWN){
+                    //当手势按下时获取音频
+                    setDialog();  //显示dialog
+                }
+                return false;
+            }
+        });
     }
 
     public void onClick(View v) {
@@ -156,9 +207,39 @@ public class Qa2sActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("Qa2sActivity",sdf.format( new Date()));
             Log.d("Qa2sActivity",qaContent.getText().toString());
             Toast.makeText(this,"提问成功",Toast.LENGTH_SHORT).show();
-            Qa2sActivity.this.finish();
+            Intent intent=new Intent(Qa2sActivity.this,Qa1sActivity.class);
+            intent.putExtra("extra_data",userName);
+            startActivity(intent);
+            finish();
         }
 
     }
 
+    private void setDialog(){
+       // qaContent.setText("");
+        recognizerDialog.setListener(dialogListener);
+        recognizerDialog.show();
+    }
+
+    private RecognizerDialogListener dialogListener=new RecognizerDialogListener() {
+        @Override
+        public void onResult(RecognizerResult recognizerResult, boolean b) {
+            String text= JsonParser.parseIatResult(recognizerResult.getResultString());
+            qaContent.append(text);
+
+
+        }
+
+        @Override
+        public void onError(SpeechError speechError) {
+
+        }
+    };
+
+    private InitListener listener=new InitListener() {
+        @Override
+        public void onInit(int i) {
+
+        }
+    };
 }

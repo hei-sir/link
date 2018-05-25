@@ -2,6 +2,7 @@ package com.example.hei_sir.link;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 /**
@@ -72,7 +74,8 @@ public abstract class ZoneAdapter extends RecyclerView.Adapter<ZoneAdapter.ViewH
         holder.zoneContent.setText(zone.getContent());
         if (zone.getImagePath().equals("one")){
         }else {
-            holder.zoneImage.setImageBitmap(BitmapFactory.decodeFile(zone.getImagePath()));
+            Bitmap bitmap=BitmapFactory.decodeByteArray(zone.getImage(),0,zone.getImage().length);
+            holder.zoneImage.setImageBitmap(bitmap);
         }
     }
 

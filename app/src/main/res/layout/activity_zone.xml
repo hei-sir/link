@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f2f2f2"
     android:orientation="vertical" >
 
-    <LinearLayout style="@style/top_nav">
+    <LinearLayout style="@style/top_nav"
+        android:id="@+id/lin">
 
         <ImageView
             android:id="@+id/iv_return"
@@ -33,11 +34,13 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <View style="@style/common_line_gray_90"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/lin3"
+        android:layout_below="@+id/lin"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginTop="24dp"
@@ -64,24 +67,11 @@
                 android:hint="分享新鲜事..."/>
         </LinearLayout>
     </LinearLayout>
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:layout_marginLeft="28dp"
-        android:layout_marginRight="28dp"
-        android:background="#d9d9d9"/>
-
-
-    <View
-        android:background="#f2f2f2"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:layout_marginLeft="26dp"
-        android:layout_marginRight="26dp"/>
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_below="@id/lin3"
         android:layout_marginLeft="24dp"
         android:id="@+id/add_zoneimage"
         android:scaleType="centerInside"
@@ -91,5 +81,23 @@
         android:layout_height="wrap_content"
         android:id="@+id/button"
         android:text="相册"/>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingHorizontal="50dp"
+        android:id="@+id/rl_s"
+        android:background="@android:color/white"
+        android:layout_alignParentBottom="true">
 
-</LinearLayout>
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="按住说话"
+            android:textColor="#c0c0c0"
+            android:background="@drawable/enter_kuang"/>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -13,6 +13,7 @@ public class Zone extends DataSupport {
     public static String TIME= "time";
     public static String CONTENT="content";
     public static String AAA="aaa";
+    public static String IMAGE="image";
     public static String IMAGEPATH="imagePath";
     private int id;
     private String username;
@@ -28,6 +29,16 @@ public class Zone extends DataSupport {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    private byte[] image;
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public int getId() {
@@ -78,20 +89,22 @@ public class Zone extends DataSupport {
         this.imageId = imageId;
     }
 
-    public Zone(String username,String name,String time,String content,String imagePath){
+    public Zone(String username,String name,String time,String content,byte[] image,String imagePath){
         this.username=username;
         this.name=name;
         this.time=time;
         this.content=content;
+        this.image=image;
         this.imagePath=imagePath;
     }
 
-    public Zone(String username,String name,String time,String content,int imageId,String imagePath){
+    public Zone(String username,String name,String time,String content,int imageId,byte[] image,String imagePath){
         this.username=username;
         this.name=name;
         this.time=time;
         this.content=content;
         this.imageId=imageId;
+        this.image=image;
         this.imagePath=imagePath;
     }
 }

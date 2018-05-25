@@ -26,7 +26,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hei_sir.link.helper.BaseActivity;
 import com.example.hei_sir.link.helper.GsonTools;
+import com.example.hei_sir.link.helper.HttpCallbackListener;
+import com.example.hei_sir.link.helper.HttpUtil;
 import com.example.hei_sir.link.helper.HttpUtils;
 import com.socks.library.KLog;
 
@@ -38,7 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class EnterActivity extends AppCompatActivity implements View.OnClickListener {
+public class EnterActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText editPerson, editCode,et_password,et_username;
     private TextView textViewR;
@@ -66,7 +69,7 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
                 et_password.setText("");
             }else {
                 result = msg.obj.toString();
-                Toast.makeText(EnterActivity.this,getString(R.string.error_invalid_internet),Toast.LENGTH_SHORT).show();
+                Toast.makeText(EnterActivity.this, getString(R.string.error_invalid_internet), Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -102,7 +105,7 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
             String password=pref.getString("password","");
             et_username.setText(account);
             et_password.setText(password);
-            rememberPass.setChecked(true);//识别保存账号密码
+            rememberPass.setChecked(isRemember);//识别保存账号密码
         }
        //Toast.makeText(this,account+"和"+password,Toast.LENGTH_SHORT).show();
         init();
@@ -207,7 +210,7 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
     public void success(){
         editor = pref.edit();
         if (rememberPass.isChecked()) {
-            editor.putBoolean("remenber_password", true);
+            editor.putBoolean("remember_password", true);
             editor.putString("account", currentUsername);
             editor.putString("password", currentPassword);
         } else {
@@ -440,7 +443,7 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
                         if (cursor1.moveToFirst() == false) {
                             KLog.d("这里是数据库");
                             KLog.d("新建用户:"+zone.getUsername());
-                            Zone zone1 = new Zone(zone.getUsername(),zone.getName(),zone.getTime(),zone.getContent(),zone.getImagePath());         //无值，可以新建用户
+                            Zone zone1 = new Zone(zone.getUsername(),zone.getName(),zone.getTime(),zone.getContent(),zone.getImage(),zone.getImagePath());         //无值，可以新建用户
                             zone1.save();
                         }else {
                             KLog.d("更新用户:" + zone.getUsername());

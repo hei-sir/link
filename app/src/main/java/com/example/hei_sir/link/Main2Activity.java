@@ -33,6 +33,7 @@ import com.socks.library.KLog;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,8 @@ public class Main2Activity extends AppCompatActivity {
     private ZoneAdapter adapter;
     private Bitmap bitmap;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-    private String name,time,content,username,school,grade,clsses,imagePath,image;
+    private String name,time,content,username,school,grade,clsses,imagePath;
+    private byte[] images;
     private int imageId,num1;
     private String num="0";
 
@@ -72,13 +74,13 @@ public class Main2Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Intent intent=getIntent();
         userName=intent.getStringExtra("extra_data");
-       /* num=intent.getStringExtra("extra_num");
+       num=intent.getStringExtra("extra_num");
         if (num.equals("0")){
             num1=0;
         }else if (num.equals("2")){
-            imagePath1=intent.getStringExtra("extra_photo");
+            imagePath=intent.getStringExtra("extra_photo");
             num1=1;
-        }*/
+        }
         FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,31 +253,41 @@ public class Main2Activity extends AppCompatActivity {
         int arraycount=0;      //判断数组总量
         Cursor cursor2=DataSupport.findBySQL("select * from Zone order by time desc");
         KLog.d(cursor2.getCount());
-        array= new String[cursor2.getCount()][5];
+        array= new String[cursor2.getCount()][6];
         if (cursor2.moveToFirst()==false){
             Toast.makeText(Main2Activity.this,"最新动态刷新失败",Toast.LENGTH_SHORT).show();
-        }else{
-            int i=0;
-            do {
-                username=cursor2.getString(cursor2.getColumnIndex("username"));
-                name = cursor2.getString(cursor2.getColumnIndex("name"));
-                time = cursor2.getString(cursor2.getColumnIndex("time"));
-                content = cursor2.getString(cursor2.getColumnIndex("content"));
+        }else {
+            int i = 0;
+            List<Zone> zones = DataSupport.findAll(Zone.class);
+            for (Zone z : zones) {
+                username = z.getUsername();
+                name = z.getName();
+                time = z.getTime();
+                content = z.getContent();
+                imagePath = z.getImagePath();
+                images = z.getImage();
+
 //                image=cursor2.getString(cursor2.getColumnIndex("imagePath"));
 //                imagePath=cursor2.getString(cursor2.getColumnIndex("imagePath"));
-               // imagePath=cursor2.getString(cursor2.getColumnIndex("imagePath"));
-                Log.d("Main2Activity",content);
+                // imagePath=cursor2.getString(cursor2.getColumnIndex("imagePath"));
+                KLog.d("Main2Activity", imagePath+"   "+images);
                 //imageId = cursor2.getInt(cursor2.getColumnIndex("imageId"));
-                array[i][0]=username;
-                array[i][1]=name;
-                array[i][2]=time;
-                array[i][3]=content;
-                array[i][4]=image;
-                arraycount=i;
-                Log.d("Main2Activity",String.valueOf(arraycount));
-                i=i+1;                  //将数据暂时存入数组，后面再处理
-            }while (cursor2.moveToNext());
+                array[i][0] = username;
+                array[i][1] = name;
+                array[i][2] = time;
+                array[i][3] = content;
+                array[i][4] = imagePath;
+                if (imagePath.equals("none")==false) {
+                    array[i][5] = new String(images);
+                }else {
+                    array[i][5]="none";
+                }
+                arraycount = i;
+                Log.d("Main2Activity", String.valueOf(arraycount)+"   "+array[i][5]);
+                i = i + 1;                  //将数据暂时存入数组，后面再处理
+            }
         }
+        cursor2.close();
 
         Cursor cursor= DataSupport.findBySQL("select * from User where user = ?",userName);
         if(cursor.moveToFirst()==false){
@@ -314,13 +326,20 @@ public class Main2Activity extends AppCompatActivity {
             for(int j=0;j<cursor1.getCount();j++){
                 KLog.d(array[i][0]+"+"+user[j]);
                 if(array[i][0].equals(user[j])){
-                    Zone zone=new Zone(array[i][0],array[i][1],array[i][2],array[i][3],R.mipmap.ic_launcher_round,"one");
+                    Zone zone=new Zone(array[i][0],array[i][1],array[i][2],array[i][3],R.mipmap.ic_launcher_round,array[i][5].getBytes(),array[i][4]);
                     zoneList.add(zone);
                 }
             }
         }
 
         Toast.makeText(Main2Activity.this,"最新动态加载完成",Toast.LENGTH_SHORT).show();
+    }
+
+
+    private byte[]img(Bitmap bitmap){           //图片转为字节
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        return baos.toByteArray();
     }
 
     private void RefreshZone(){
@@ -341,7 +360,7 @@ public class Main2Activity extends AppCompatActivity {
                         if (cursor1.moveToFirst() == false) {
                             KLog.d("这里是数据库");
                             KLog.d("新建用户:"+zone.getContent());
-                            Zone zone1 = new Zone(zone.getUsername(),zone.getName(),zone.getTime(),zone.getContent(),zone.getImagePath());         //无值，可以新建用户
+                            Zone zone1 = new Zone(zone.getUsername(),zone.getName(),zone.getTime(),zone.getContent(),zone.getImage(),zone.getImagePath());         //无值，可以新建用户
                             zone1.save();
                         }else {
                             KLog.d("更新用户:" + zone.getContent());

@@ -151,13 +151,18 @@ public class Main3Activity extends AppCompatActivity {
             for (int i=0;i<2;i++) {
                 Info User = new Info("账户", cursor1.getString(cursor1.getColumnIndex("user")));
                 KLog.d(cursor1.getString(cursor1.getColumnIndex("number")));
-                Info Name = new Info("姓名", cursor1.getString(cursor1.getColumnIndex("name"))+"   "+cursor1.getString(cursor1.getColumnIndex("identity")));
+                if(cursor1.getString(cursor1.getColumnIndex("identity")).equals("老师")){
+                    Info Name = new Info("", cursor1.getString(cursor1.getColumnIndex("name"))+"   老师");
+                    infoList.add(Name);
+                }else {
+                    Info Name = new Info("", cursor1.getString(cursor1.getColumnIndex("name")) + "   的家长");
+                    infoList.add(Name);
+                }
                 Info School = new Info("学校", cursor1.getString(cursor1.getColumnIndex("school")));
                 Info Grade = new Info("年级", cursor1.getString(cursor1.getColumnIndex("grade")));
                 Info Class = new Info("班级", cursor1.getString(cursor1.getColumnIndex("clsses")));
                 Info Num = new Info("学号/工号", cursor1.getString(cursor1.getColumnIndex("number")));
                 infoList.add(User);
-                infoList.add(Name);
                 infoList.add(School);
                 infoList.add(Grade);
                 infoList.add(Class);

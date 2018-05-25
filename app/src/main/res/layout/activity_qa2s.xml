@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f2f2f2"
     android:orientation="vertical" >
 
-    <LinearLayout style="@style/top_nav">
+    <LinearLayout style="@style/top_nav"
+        android:id="@+id/lin">
 
         <ImageView
             android:id="@+id/iv_return"
@@ -19,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="提问"
+            android:text="留言板"
             android:textSize="16sp" />
 
         <TextView
@@ -38,9 +39,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_below="@id/lin"
+        android:layout_centerVertical="true"
         android:background="#ffffff"
         android:orientation="vertical" >
         <View
@@ -53,6 +53,10 @@
             android:layout_height="44dp"
             android:gravity="center"
             android:orientation="horizontal" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="班级老师："/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,15 +73,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_height="150dp"
+            android:paddingHorizontal="28dp"
             android:orientation="horizontal" >
             <EditText
                 android:id="@+id/qa_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top"
                 android:hint="提问的问题"/>
         </LinearLayout>
     </LinearLayout>
@@ -89,30 +92,39 @@
         android:background="#d9d9d9"/>
 
 
-    <View
-        android:background="#f2f2f2"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:layout_marginLeft="26dp"
-        android:layout_marginRight="26dp"/>
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:background="@drawable/bg_radius_sign_btn"
-        android:text="确定提问"
-        android:textColor="#ffffff"
-        android:textSize="15sp"
-        />
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="等待回复需要时间，请耐心等候"
-        android:gravity="center"
-        android:paddingTop="5dp"
-        android:textSize="10dp"/>
+        android:layout_height="50dp"
+        android:id="@+id/rl_s"
+        android:background="@android:color/white"
+        android:layout_alignParentBottom="true">
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/enter_s"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/jianpan"/>
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="按住说话"
+            android:textColor="#c0c0c0"
+            android:background="@drawable/enter_kuang"/>
+        <Button
+            android:id="@+id/button"
+            android:layout_width="55dp"
+            android:layout_height="35dp"
+            android:text="确定"
+            android:textColor="#ffffff"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:background="@android:color/holo_green_light"/>
+    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

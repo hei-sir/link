@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.socks.library.KLog;
+
 import org.litepal.crud.DataSupport;
 
 
@@ -88,6 +90,7 @@ public class FromAddActivity extends AppCompatActivity implements View.OnClickLi
                 Form form=new Form();
                 form.setLesson(lession1);
                 form.updateAll("datetime=? and classes=?",datetime,"1");
+                KLog.d(datetime);
                 Toast.makeText(this, "课程修改成功", Toast.LENGTH_SHORT).show();
                 lession.setText("");
             }else{
@@ -96,6 +99,7 @@ public class FromAddActivity extends AppCompatActivity implements View.OnClickLi
                 form.setLesson(lession1);
                 form.setDatetime(datetime);
                 form.save();
+                KLog.d(datetime);
                 Toast.makeText(this, "课程加入成功", Toast.LENGTH_SHORT).show();
                 lession.setText("");
             }

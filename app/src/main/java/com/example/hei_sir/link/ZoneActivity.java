@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,10 +33,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hei_sir.link.helper.GsonTools;
+import com.example.hei_sir.link.helper.HttpCallbackListener;
+import com.example.hei_sir.link.helper.HttpUtil;
+import com.example.hei_sir.link.helper.JsonParser;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechUtility;
+import com.iflytek.cloud.ui.RecognizerDialog;
+import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.socks.library.KLog;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -49,9 +61,11 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
     String filename=new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())+"jpg";
     EditText zonecontent;
     TextView complete;
-    private Button button;
+    private Button button,button2;
+    private RecognizerDialog recognizerDialog;
     private ImageView back,addzoneimage;
     private Uri imageUri;
+    private byte[] images ;
     private String imagePath;
     private String imagePath1="none";
     public static final int TAKE_PHOTO =1,CHOOSE_PHOTO=2;
@@ -83,9 +97,13 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent=getIntent();
         userName=intent.getStringExtra("extra_data");
         zonecontent=(EditText)findViewById(R.id.zone_content);
+        SpeechUtility.createUtility(ZoneActivity.this, SpeechConstant.APPID +"=5b068ac5");
         init();
     }
     private void init(){
+        recognizerDialog=new RecognizerDialog(ZoneActivity.this,listener);
+        recognizerDialog.setParameter(SpeechConstant.DOMAIN,"iat");
+        recognizerDialog.setParameter(SpeechConstant.SAMPLE_RATE,"16000");
         complete=(TextView) findViewById(R.id.complete);
         complete.setOnClickListener(this);
         back = (ImageView) findViewById(R.id.iv_return);
@@ -94,6 +112,30 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
         addzoneimage.setOnClickListener(this);
         /*button=(Button)findViewById(R.id.button);
         button.setOnClickListener(this);*/
+        button2=(Button)findViewById(R.id.button2);
+        button2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction()==MotionEvent.ACTION_UP){
+                    final Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(2000);  //开启睡眠两秒
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    thread.start();  //开启线程
+                }
+                if (event.getAction() ==MotionEvent.ACTION_DOWN){
+                    //当手势按下时获取音频
+                    setDialog();  //显示dialog
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -106,9 +148,9 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
                        complete();
                        break;
                     case R.id.add_zoneimage:
-                        Toast.makeText(this,"服务器正在完善中，敬请期待",Toast.LENGTH_SHORT).show();
-//                        photo=0;
-//                        chooseimage();
+//                        Toast.makeText(this,"服务器正在完善中，敬请期待",Toast.LENGTH_SHORT).show();
+                        photo=0;
+                        chooseimage();
                         break;
                     /*case R.id.button:
                         photo=0;
@@ -119,6 +161,10 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
 
     public void complete(){
         final String content= zonecontent.getText().toString().trim();
+        if (imagePath1.equals("none")==false) {                   //判断是否有图片添加
+            Bitmap headShot = BitmapFactory.decodeFile(imagePath1);      //把图片转换字节流
+            images = img(headShot);
+        }
         if (TextUtils.isEmpty(content)) {  //当提问没有输入时
             Toast.makeText(this, "写写想要分享的事情把！", Toast.LENGTH_SHORT).show();
             zonecontent.requestFocus();//使输入框失去焦点
@@ -137,6 +183,9 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
             params.put(Zone.NAME,name);
             params.put(Zone.TIME,sdf.format(new Date()));
             params.put(Zone.CONTENT,content);
+            params.put(Zone.IMAGEPATH,imagePath1);
+            String imagestr = new String(images);    //二进制转String           String转二进制：byte[] byteArray = str.getBytes();
+            params.put(Zone.IMAGE,imagestr);
             params.put(Zone.AAA,"2");      //代表空间端上传
             KLog.d("成功上传");
             try {
@@ -163,7 +212,7 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
             }
             KLog.d("上传部分运行完了");
 
-            Zone zone=new Zone(userName,name,sdf.format(new Date()),content,R.mipmap.ic_launcher,"one");
+            Zone zone=new Zone(userName,name,sdf.format(new Date()),content,R.mipmap.ic_launcher,images,imagePath1);
             Log.d("存入的是",imagePath1);
             zone.save();
            /*Log.d("ZoneActivity",userName);
@@ -214,7 +263,7 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(intent,CHOOSE_PHOTO);
     }
 
-    public void addimage(){
+    public void addimage(){                //获取照相
         File outputImage=new File(getExternalCacheDir(),"output_image");
         try{
             if (outputImage.exists()){
@@ -234,6 +283,11 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(intent,TAKE_PHOTO);
     }
 
+    private byte[]img(Bitmap bitmap){           //图片转为字节
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        return baos.toByteArray();
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResult){
@@ -344,4 +398,32 @@ public class ZoneActivity extends AppCompatActivity implements View.OnClickListe
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    private void setDialog(){
+        // qaContent.setText("");
+        recognizerDialog.setListener(dialogListener);
+        recognizerDialog.show();
+    }
+
+    private RecognizerDialogListener dialogListener=new RecognizerDialogListener() {
+        @Override
+        public void onResult(RecognizerResult recognizerResult, boolean b) {
+            String text= JsonParser.parseIatResult(recognizerResult.getResultString());
+            zonecontent.append(text);
+
+
+        }
+
+        @Override
+        public void onError(SpeechError speechError) {
+
+        }
+    };
+
+    private InitListener listener=new InitListener() {
+        @Override
+        public void onInit(int i) {
+
+        }
+    };
 }

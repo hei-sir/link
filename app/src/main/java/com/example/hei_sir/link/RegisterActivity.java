@@ -19,6 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hei_sir.link.helper.GsonTools;
+import com.example.hei_sir.link.helper.HttpCallbackListener;
+import com.example.hei_sir.link.helper.HttpUtil;
+import com.socks.library.KLog;
 
 import org.litepal.crud.DataSupport;
 
@@ -30,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private Button button,SMSBtn;
     private TextView enterText;
     private ImageView returnImage;
-
+    private String userok;
     Spinner identity,grades,classes;
 
     String[] identitys={"老师","学生"};
@@ -52,6 +55,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 finish();
             }else if ("Wrong".equals(msg.obj.toString())){
                 result = "fail";
+                Toast.makeText(RegisterActivity.this,"用户名已存在，请修改", Toast.LENGTH_SHORT).show();
+            }else if ("WrongNum".equals(msg.obj.toString())){
+                result = "fail";
+                Toast.makeText(RegisterActivity.this,"学号/工号已存在，请修改", Toast.LENGTH_SHORT).show();
+            }else if ("WrongId".equals(msg.obj.toString())){
+                result = "fail";
+                Toast.makeText(RegisterActivity.this,"该班级已有班主任注册，请检查后重试", Toast.LENGTH_SHORT).show();
             }else {
                 result = msg.obj.toString();
                 Toast.makeText(RegisterActivity.this, getString(R.string.error_invalid_internet), Toast.LENGTH_SHORT).show();
@@ -125,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         final String school=editschool.getText().toString().trim();
         final String number=editnumber.getText().toString().trim();
         if (TextUtils.isEmpty(username)) {  //当手机号没有输入时
-            Toast.makeText(this, "账户不能为空！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "用户名不能为空！", Toast.LENGTH_SHORT).show();
             editTextP.requestFocus();//使输入框失去焦点
             return;
         }else if(username.length()<6){      //用户名小于6位
@@ -153,9 +163,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             editnumber.requestFocus();//使输入框失去焦点
             return;
         } else {          //如果全部都已填写，则进行注册操作
-            final ProgressDialog pd = new ProgressDialog(this);
-            pd.setMessage("正在注册……");
-            pd.show();
 
 
             int s1=identity.getSelectedItemPosition();                          //注册的操作放在此处
@@ -224,7 +231,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 //            }
 //            cursor.close();
 //            cursor1.close();
-            pd.dismiss();
         }
     }
     @Override
