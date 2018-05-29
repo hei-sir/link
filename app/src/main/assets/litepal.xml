@@ -2,7 +2,7 @@
 <litepal>
     <dbname value="Link"></dbname>
 
-    <version value="18"></version>
+    <version value="20"></version>
 
     <list>
         <mapping class="com.example.hei_sir.link.Form"></mapping>

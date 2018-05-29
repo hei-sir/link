@@ -26,14 +26,16 @@ import com.socks.library.KLog;
 import org.litepal.crud.DataSupport;
 
 import java.util.HashMap;
+import java.util.List;
 
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
-    private EditText editTextP, editSMS, editTextCT,editname,editschool,editnumber;
-    private Button button,SMSBtn;
+    private EditText editTextP,editTextCT,editname,editschool,editnumber,editphone;
+    private Button button;
     private TextView enterText;
     private ImageView returnImage;
     private String userok;
+    private static String passwordMd5;
     Spinner identity,grades,classes;
 
     String[] identitys={"老师","学生"};
@@ -83,6 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         editname=(EditText)findViewById(R.id.et_name);
         editschool=(EditText)findViewById(R.id.et_school);
         editnumber=(EditText)findViewById(R.id.et_number);
+        editphone=(EditText)findViewById(R.id.et_phone);
         identity=(Spinner)findViewById(R.id.identity);
         grades=(Spinner)findViewById(R.id.grades);
         classes=(Spinner)findViewById(R.id.classes);
@@ -134,6 +137,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         final String name=editname.getText().toString().trim();
         final String school=editschool.getText().toString().trim();
         final String number=editnumber.getText().toString().trim();
+        final String phone=editphone.getText().toString().trim();
         if (TextUtils.isEmpty(username)) {  //当手机号没有输入时
             Toast.makeText(this, "用户名不能为空！", Toast.LENGTH_SHORT).show();
             editTextP.requestFocus();//使输入框失去焦点
@@ -154,6 +158,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(this, "姓名不能为空！", Toast.LENGTH_SHORT).show();
             editname.requestFocus();//使输入框失去焦点
             return;
+        }else if (TextUtils.isEmpty(phone)) {//当验证码没有输入时
+            Toast.makeText(this, "联系电话不能为空！", Toast.LENGTH_SHORT).show();
+            editphone.requestFocus();//使输入框失去焦点
+            return;
+        }else if (phone.length()!=11) {//当验证码没有输入时
+            Toast.makeText(this, "手机号码应为11位", Toast.LENGTH_SHORT).show();
+            editphone.requestFocus();//使输入框失去焦点
+            return;
         }else if (TextUtils.isEmpty(school)) {//当验证码没有输入时
             Toast.makeText(this, "学校不能为空！", Toast.LENGTH_SHORT).show();
             editschool.requestFocus();//使输入框失去焦点
@@ -165,16 +177,34 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         } else {          //如果全部都已填写，则进行注册操作
 
 
+
             int s1=identity.getSelectedItemPosition();                          //注册的操作放在此处
             int s2=grades.getSelectedItemPosition();
             int s3=classes.getSelectedItemPosition();
             String spinnerid=identitys[s1];
             String spinnergr=gradeses[s2];
             String spinnercl=classeses[s3];
+            User user=new User();
+            user.setUser(username);
+            user.setPassword(password);
+            user.setName(name);
+            user.setSchool(school);
+            user.setGrade(spinnergr);
+            user.setIdentity(spinnerid);
+            user.setClsses(spinnercl);
+            user.setNumber(number);
+            user.save();
+
+            List<User> user1=DataSupport.where("user=?",username).find(User.class);
+            for (User user2:user1){
+                passwordMd5=user2.getPassword().toString();
+            }
+            DataSupport.deleteAll(User.class,"user = ?",username);
             HashMap<String, String> params = new HashMap<String, String>();
             params.put(User.USER, editTextP.getText().toString());
-            params.put(User.PASSWORD, editTextCT.getText().toString());
+            params.put(User.PASSWORD,passwordMd5);
             params.put(User.NAME, editname.getText().toString());
+            params.put(User.PHONE, editphone.getText().toString());
             params.put(User.SCHOOL, editschool.getText().toString());
             params.put(User.NUMBER,editnumber.getText().toString());
             params.put(User.IDENTITY,spinnerid);

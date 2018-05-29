@@ -52,7 +52,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private DrawerLayout mDrawerLayout;
-    private CardView mCardView0,mCardView1,mCardView2,mCardView3;
+    private CardView mCardView0,mCardView1,mCardView2,mCardView3,mCardView4;
     private TextView txt,name;
     private static boolean isExit = false;
     private static String userName,school,grade,clsses;
@@ -150,6 +150,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCardView2.setOnClickListener(this);
         mCardView3=(CardView)findViewById(R.id.cardView3);
         mCardView3.setOnClickListener(this);
+        mCardView4=(CardView)findViewById(R.id.cardView4);
+        mCardView4.setOnClickListener(this);
 
         //获取公告数据！
         new Thread(new Runnable() {
@@ -161,15 +163,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 for (User user : listMe) {
                     Cursor cursor=DataSupport.findBySQL("select * from User");
                     if (cursor.moveToFirst()){
-                        String userid;
+                        String user2;
                         cursor.moveToFirst();
                         do{
-                            userid=cursor.getString(cursor.getColumnIndex("user"));
-                            if (userid.equals(user.getUser())){
-                                ContentValues values=new ContentValues();                  //采用contentValues方法更新数据
-                                values.put("notice",user.getNotice());
-                                DataSupport.updateAll(User.class,values," user = ?",userid);
-                            }
+                            user2=cursor.getString(cursor.getColumnIndex("user"));
+                            KLog.d(user.getUser()+"   "+cursor.getString(cursor.getColumnIndex("name"))+"   "+cursor.getString(cursor.getColumnIndex("phone")));
+//                            if (user2.equals(user.getUser())){
+//                                ContentValues values=new ContentValues();                  //采用contentValues方法更新数据
+//                                values.put("notice",user.getNotice());
+//                                DataSupport.updateAll(User.class,values," user = ?",user2);
+//                            }
                         }while (cursor.moveToNext());
                     }
                 }
@@ -292,7 +295,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     cursor.close();
                 break;
-
+            case R.id.cardView4:
+                Intent intent3=new Intent(MainActivity.this,ContacttActivity.class);      //进入学生qa问答系统
+                intent3.putExtra("extra_data",userName);
+                startActivity(intent3);
         }
     }
 

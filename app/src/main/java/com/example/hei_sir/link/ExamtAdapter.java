@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.hei_sir.link.helper.ExamAdapter;
+import com.socks.library.KLog;
 
 import org.litepal.crud.DataSupport;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public abstract class ExamtAdapter extends RecyclerView.Adapter<ExamtAdapter.ViewHolder>{
     private List<Exam> mExamList;
     private Context mContext;
+    private static String username;
     private int i;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
@@ -52,8 +54,21 @@ public abstract class ExamtAdapter extends RecyclerView.Adapter<ExamtAdapter.Vie
             public void onClick(View v) {
                 int position=holder.getAdapterPosition();
                 Exam exam=mExamList.get(position);
+                Cursor cursor=DataSupport.findBySQL("select * from User where user = ?",exam.getUserId());
+                if (cursor.moveToFirst()){
+                    cursor.moveToFirst();
+                    Cursor cursor1=DataSupport.findBySQL("select * from User where grade = ?and school = ? and clsses = ? and identity = ?",cursor.getString(cursor.getColumnIndex("grade")),
+                            cursor.getString(cursor.getColumnIndex("school")),cursor.getString(cursor.getColumnIndex("clsses")),"老师");
+                    if (cursor1.moveToFirst()){
+                        cursor1.moveToFirst();
+                        username=cursor1.getString(cursor1.getColumnIndex("user"));
+                    }
+                    cursor1.close();
+                }
+                cursor.close();
                 Intent intent=new Intent(mContext,Exam2tActivity.class);
                 intent.putExtra(Exam2tActivity.EXAMEXAM,exam.getExamId());
+                intent.putExtra(Exam2tActivity.EXAMUSER,username);
                 intent.putExtra(Exam2tActivity.EXAMCOUNT,String.valueOf(i));
                 intent.putExtra(Exam2tActivity.EXAMNAME,exam.getName());
                 mContext.startActivity(intent);

@@ -1,350 +1,236 @@
 package com.example.hei_sir.link;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
+import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.hei_sir.link.helper.GsonTools;
+import com.example.hei_sir.link.helper.HttpCallbackListener;
+import com.example.hei_sir.link.helper.HttpUtil;
+import com.socks.library.KLog;
 
-import static android.Manifest.permission.READ_CONTACTS;
+import org.litepal.crud.DataSupport;
 
-/**
- * A login screen that offers login via email/password.
- */
-public class ExamAddActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
+public class ExamAddActivity extends AppCompatActivity {
+    private EditText yuwen,shuxue,yingyu,wuli,huaxue,zhengzhi,rank,examid,name;
+    private static String username,exam,school,grade,clsses;;
+    private TextView time;
+    private Button button;
+    private String date;
+    private int order;
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
+    private String originAddress = "http://"+ GsonTools.ip+":8080/Test/ExamAddServlet";
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
+    Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String result = "";
+            if ("OK".equals(msg.obj.toString())){
+                result = "success";
+                Toast.makeText(ExamAddActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                //finish();
+            }else if ("Wrong".equals(msg.obj.toString())){
+                result = "fail";
+                Toast.makeText(ExamAddActivity.this,"该学生不存在或其家长未注册，请修改学生姓名", Toast.LENGTH_SHORT).show();
+            }else {
+                result = msg.obj.toString();
+                Toast.makeText(ExamAddActivity.this, result, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ExamAddActivity.this, getString(R.string.error_invalid_internet), Toast.LENGTH_SHORT).show();
+            }
+        }
     };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
-
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_add);
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
-
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        Intent intent=getIntent();
+        username=intent.getStringExtra("extra_data");
+        exam=intent.getStringExtra("extra_exam");
+        date=sdf.format( new Date());
+        KLog.d(username);
+        examid=(EditText)findViewById(R.id.examid);
+        examid.setText(exam);
+        name=(EditText)findViewById(R.id.name);
+        yuwen=(EditText)findViewById(R.id.yuwen);
+        shuxue=(EditText)findViewById(R.id.shuxue);
+        yingyu=(EditText)findViewById(R.id.yingyu);
+        wuli=(EditText)findViewById(R.id.wuli);
+        huaxue=(EditText)findViewById(R.id.huaxue);
+        zhengzhi=(EditText)findViewById(R.id.zhengzhi);
+        rank=(EditText)findViewById(R.id.rank);
+        time=(TextView)findViewById(R.id.time);
+        time.setText(date);
+        time.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
+            public void onClick(View v) {
+                getDate();
+            }
+        });
+        button=(Button)findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    add();
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
     }
 
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
+    private void add(){         //这是确定录入的操作
+        final String name1=name.getText().toString().trim();
+        final String examid1=examid.getText().toString().trim();
+        final int rank1= Integer.parseInt(rank.getText().toString().trim());
+        final int yuwen1=Integer.parseInt(yuwen.getText().toString().trim());
+        final int shuxue1=Integer.parseInt(shuxue.getText().toString().trim());
+        final int yingyu1=Integer.parseInt(yingyu.getText().toString().trim());
+        final int wuli1=Integer.parseInt(wuli.getText().toString().trim());
+        final int huaxue1=Integer.parseInt(huaxue.getText().toString().trim());
+        final int zhengzhi1=Integer.parseInt(zhengzhi.getText().toString().trim());
+        if (TextUtils.isEmpty(name1)){
+            Toast.makeText(this, "学生姓名不能为空！", Toast.LENGTH_SHORT).show();
+            name.requestFocus();//使输入框失去焦点
             return;
-        }
-
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
-        }
-    }
-
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    private void attemptLogin() {
-        if (mAuthTask != null) {
+        }else if (TextUtils.isEmpty(examid1)){
+            Toast.makeText(this, "考试名称不能为空！", Toast.LENGTH_SHORT).show();
+            examid.requestFocus();//使输入框失去焦点
             return;
-        }
-
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-        }
-    }
-
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(ExamAddActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
+        }else if (TextUtils.isEmpty(rank.getText().toString().trim())){
+            Toast.makeText(this, "班级排名不能为空！", Toast.LENGTH_SHORT).show();
+            rank.requestFocus();//使输入框失去焦点
+            return;
+        }else if (rank1<0) {
+            Toast.makeText(this, "班级排名应为正数", Toast.LENGTH_SHORT).show();
+            rank.requestFocus();//使输入框失去焦点
+            return;
+        }else if (TextUtils.isEmpty(yuwen.getText().toString().trim())) {
+            Toast.makeText(this, "语文成绩不能为空！", Toast.LENGTH_SHORT).show();
+            yuwen.requestFocus();//使输入框失去焦点
+            return;
+        }else if (yuwen1>150&&yuwen1<0) {
+            Toast.makeText(this, "语文成绩必须为正数，且小于150！", Toast.LENGTH_SHORT).show();
+            yuwen.requestFocus();//使输入框失去焦点
+            return;
+        }else if (TextUtils.isEmpty(shuxue.getText().toString().trim())) {
+            Toast.makeText(this, "数学成绩不能为空！", Toast.LENGTH_SHORT).show();
+            shuxue.requestFocus();//使输入框失去焦点
+            return;
+        }else if (shuxue1>150&&shuxue1<0) {
+            Toast.makeText(this, "数学成绩必须为正数，且小于150！", Toast.LENGTH_SHORT).show();
+            shuxue.requestFocus();//使输入框失去焦点
+            return;
+        }else if (TextUtils.isEmpty(yingyu.getText().toString().trim())) {
+            Toast.makeText(this, "英语成绩不能为空！", Toast.LENGTH_SHORT).show();
+            yingyu.requestFocus();//使输入框失去焦点
+            return;
+        }else if (yingyu1>150&&yingyu1<0) {
+            Toast.makeText(this, "英语成绩必须为正数，且小于150！", Toast.LENGTH_SHORT).show();
+            yingyu.requestFocus();//使输入框失去焦点
+            return;
+        }else if (TextUtils.isEmpty(wuli.getText().toString().trim())) {
+            Toast.makeText(this, "物理成绩不能为空！", Toast.LENGTH_SHORT).show();
+            wuli.requestFocus();//使输入框失去焦点
+            return;
+        }else if (wuli1>150&&wuli1<0) {
+            Toast.makeText(this, "物理成绩必须为正数，且小于150！", Toast.LENGTH_SHORT).show();
+            wuli.requestFocus();//使输入框失去焦点
+            return;
+        }else if (TextUtils.isEmpty(huaxue.getText().toString().trim())) {
+            Toast.makeText(this, "化学成绩不能为空！", Toast.LENGTH_SHORT).show();
+            huaxue.requestFocus();//使输入框失去焦点
+            return;
+        }else if (huaxue1>150&&huaxue1<0) {
+            Toast.makeText(this, "化学成绩必须为正数，且小于150！", Toast.LENGTH_SHORT).show();
+            huaxue.requestFocus();//使输入框失去焦点
+            return;
+        }else if (TextUtils.isEmpty(zhengzhi.getText().toString().trim())) {
+            Toast.makeText(this, "政治成绩不能为空！", Toast.LENGTH_SHORT).show();
+            zhengzhi.requestFocus();//使输入框失去焦点
+            return;
+        }else if (zhengzhi1>150&&zhengzhi1<0) {
+            Toast.makeText(this, "政治成绩必须为正数，且小于150！", Toast.LENGTH_SHORT).show();
+            zhengzhi.requestFocus();//使输入框失去焦点
+            return;
+        }else {
+            Cursor cursor=DataSupport.findBySQL("select * from User where user = ?",username);
+            if (cursor.moveToFirst()){
+                cursor.moveToFirst();
+                school=cursor.getString(cursor.getColumnIndex("school"));
+                grade=cursor.getString(cursor.getColumnIndex("grade"));
+                clsses=cursor.getString(cursor.getColumnIndex("clsses"));
+            }
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put(Exam.CHINESE,yuwen.getText().toString().trim());
+            params.put(Exam.MATH,shuxue.getText().toString().trim());
+            params.put(Exam.ENGLISH,yingyu.getText().toString().trim());
+            params.put(Exam.PHYSICS,wuli.getText().toString().trim());
+            params.put(Exam.CHEMICAL,huaxue.getText().toString().trim());
+            params.put(Exam.POLITICS,zhengzhi.getText().toString().trim());
+            params.put(Exam.EXAMID,examid1);
+            params.put(Exam.USERID,"null");
+            params.put(Exam.SCORE,String.valueOf(yuwen1+shuxue1+yingyu1+wuli1+huaxue1+zhengzhi1));
+            params.put(Exam.RANK,rank.getText().toString().trim());
+            params.put(Exam.NAME,name1);
+            params.put(User.SCHOOL,school);
+            params.put(User.GRADE,grade);
+            params.put(User.CLSSES,clsses);
+            params.put(Exam.TIME,time.getText().toString());
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
+                //构造完整URL
+                String compeletedURL = HttpUtil.getURLWithParams(originAddress, params);
+                //发送请求
+                HttpUtil.sendHttpRequest(compeletedURL, new HttpCallbackListener() {
+                    @Override
+                    public void onFinish(String response) {
+                        Message message = new Message();
+                        message.obj = response;
+                        mHandler.sendMessage(message);
+                    }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                    @Override
+                    public void onError(Exception e) {
+                        Message message = new Message();
+                        message.obj = e.toString();
+                        mHandler.sendMessage(message);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
+    }
+
+    public void getDate() {                //获取日期
+        String[]  strs=date.split("-");
+        for(int i=0,len=strs.length;i<len;i++){
+            System.out.println(strs[i].toString());
         }
+        new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                KLog.d(String.format("%d%d%d",i,i1+1,i2));
+                order= Integer.parseInt(String.format("%d%d%d",i,i1+1,i2));
+                KLog.d(String.valueOf(order+1));
+                date=String.format("%d-%d-%d",i,i1+1,i2);
+                time.setText(date);
+            }
+        },Integer.parseInt(strs[0].toString()),Integer.parseInt(strs[1].toString())-1,Integer.parseInt(strs[2].toString())).show();
     }
 }
-

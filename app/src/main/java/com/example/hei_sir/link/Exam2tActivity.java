@@ -27,10 +27,12 @@ import java.util.List;
 
 public class Exam2tActivity extends AppCompatActivity {
     private List<Exam> examList = new ArrayList<>();
+    private static String username;
     private Exam2tAdapter adapter;
     public static final String EXAMNAME="exam_name";
     public static final String EXAMEXAM="exam_exam";
     public static final String EXAMCOUNT="exam_count";
+    public static final String EXAMUSER="username";
     private ImageView imageView;
     private int chinese,math,english,politics,physics,chemical,score;
     private String name,rank,userId,time,examId;
@@ -43,6 +45,7 @@ public class Exam2tActivity extends AppCompatActivity {
         String examName=intent.getStringExtra(EXAMNAME);
         final String examExam=intent.getStringExtra(EXAMEXAM);
         final String examCount=intent.getStringExtra(EXAMCOUNT);
+        username=intent.getStringExtra(EXAMUSER);
         KLog.d(examCount);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout=(CollapsingToolbarLayout)findViewById(R.id.collapsing_tollbar);
@@ -62,6 +65,8 @@ public class Exam2tActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Exam2tActivity.this,ExamAddActivity.class);
+                intent.putExtra("extra_data",username);
+                intent.putExtra("extra_exam",examExam);
                 startActivity(intent);
             }
         });

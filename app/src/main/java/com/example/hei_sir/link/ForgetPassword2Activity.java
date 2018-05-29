@@ -36,6 +36,9 @@ import android.widget.Toast;
 import com.example.hei_sir.link.helper.GsonTools;
 import com.example.hei_sir.link.helper.HttpCallbackListener;
 import com.example.hei_sir.link.helper.HttpUtil;
+import com.socks.library.KLog;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +70,7 @@ public class ForgetPassword2Activity extends AppCompatActivity implements Loader
 
     // UI references.
     private AutoCompleteTextView mPasswordView,mPasswordView1;
-    private static String user,number;
+    private static String user,number,passwordMd5;
     private View mProgressView;
     private View mLoginFormView;
     private Button mEmailSignInButton;
@@ -241,11 +244,24 @@ public class ForgetPassword2Activity extends AppCompatActivity implements Loader
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+
+            User user3=new User();
+            user3.setUser(user);
+            user3.setPassword(mPasswordView.getText().toString());
+            user3.save();
+
+            List<User> user1= DataSupport.where("user=?",user).find(User.class);
+            for (User user2:user1){
+                passwordMd5=user2.getPassword();
+                KLog.d(passwordMd5);
+            }
+            DataSupport.deleteAll(User.class,"user = ?",user);
+
             //构造HashMap
             HashMap<String, String> params = new HashMap<String, String>();
             params.put(User.USER,user);
             params.put(User.NUMBER,number);
-            params.put(User.PASSWORD,mPasswordView.getText().toString());
+            params.put(User.PASSWORD,passwordMd5);
             params.put(User.STATUS,"5");
             try {
                 //构造完整URL

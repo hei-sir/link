@@ -1,10 +1,14 @@
 package com.example.hei_sir.link;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -126,7 +130,11 @@ public class Qa2tActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 if (event.getAction() ==MotionEvent.ACTION_DOWN){
                     //当手势按下时获取音频
-                    setDialog();  //显示dialog
+                    if (ContextCompat.checkSelfPermission(Qa2tActivity.this, Manifest.permission.RECORD_AUDIO)!= PackageManager.PERMISSION_GRANTED){
+                        ActivityCompat.requestPermissions(Qa2tActivity.this,new String[]{Manifest.permission.RECORD_AUDIO},1);
+                    }else {
+                        setDialog();
+                    }
                 }
                 return false;
             }
@@ -240,4 +248,18 @@ public class Qa2tActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     };
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults){
+        switch (requestCode){
+            case 1:
+                if (grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
+
+                }else {
+                    Toast.makeText(this,"You denied the permission",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+        }
+    }
 }

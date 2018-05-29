@@ -50,6 +50,7 @@ public class EnterActivity extends BaseActivity implements View.OnClickListener 
     public static String currentUsername,username,school,grade,clsses,sname1,tname1,qsname1,qtname1,school2,grade2,clsses2;
     private String currentPassword,sc,gr,cl,ide,examname;
     private boolean progressShow;
+    private static String passwordMd5;
     //用于接收Http请求的servlet的URL地址，请自己定义
     private String originAddress = "http://"+GsonTools.ip+":8080/Test/LoginServlet";
     //用于处理消息的Handler
@@ -259,6 +260,7 @@ public class EnterActivity extends BaseActivity implements View.OnClickListener 
                             user1.setClsses(user.getClsses());
                             user1.setIdentity(user.getIdentity());
                             user1.setName(user.getName());
+                            user1.setPhone(user.getPhone());
                             user1.setNumber(user.getNumber());
                             KLog.d("存储"+username+"数据");
                             user1.setId(user.getId());
@@ -290,6 +292,7 @@ public class EnterActivity extends BaseActivity implements View.OnClickListener 
                                 user1.setClsses(user.getClsses());
                                 user1.setIdentity(user.getIdentity());
                                 user1.setName(user.getName());
+                                user1.setPhone(user.getPhone());
                                 user1.setNumber(user.getNumber());
                                 KLog.d(user.getUser()+"      "+user.getSchool()+"      "+user.getGrade()+"       "+user.getClsses());
                                 user1.setId(user.getId());
@@ -303,6 +306,7 @@ public class EnterActivity extends BaseActivity implements View.OnClickListener 
                                 values.put("notice",user.getNotice());
                                 values.put("photo",user.getPhoto());
                                 values.put("name",user.getName());
+                                values.put("phone",user.getPhone());
                                 values.put("number",user.getNumber());
                                 DataSupport.updateAll(User.class,values,"user=?", user.getUser());
                             }
@@ -325,6 +329,7 @@ public class EnterActivity extends BaseActivity implements View.OnClickListener 
                                 user1.setClsses(user.getClsses());
                                 user1.setIdentity(user.getIdentity());
                                 user1.setName(user.getName());
+                                user1.setPhone(user.getPhone());
                                 user1.setNumber(user.getNumber());
                                 KLog.d(user.getUser()+"      "+user.getSchool()+"      "+user.getGrade()+"       "+user.getClsses());
                                 user1.setId(user.getId());
@@ -338,6 +343,7 @@ public class EnterActivity extends BaseActivity implements View.OnClickListener 
                                 values.put("notice",user.getNotice());
                                 values.put("photo",user.getPhoto());
                                 values.put("name",user.getName());
+                                values.put("phone",user.getPhone());
                                 values.put("number",user.getNumber());
                                 DataSupport.updateAll(User.class,values,"user=?", user.getUser());
                             }
@@ -581,9 +587,21 @@ public class EnterActivity extends BaseActivity implements View.OnClickListener 
             return;
         }else{
             //构造HashMap
+
+            User user=new User();
+            user.setUser(currentUsername);
+            user.setPassword(currentPassword);
+            user.save();
+
+            List<User> user1=DataSupport.where("user=?",currentUsername).find(User.class);
+            for (User user2:user1){
+                passwordMd5=user2.getPassword();
+                KLog.d(passwordMd5);
+            }
+            DataSupport.deleteAll(User.class,"user = ?",currentUsername);
            HashMap<String, String> params = new HashMap<String, String>();
             params.put(User.USER, editPerson.getText().toString());
-            params.put(User.PASSWORD, editCode.getText().toString());
+            params.put(User.PASSWORD, passwordMd5);
             params.put(User.STATUS,"1");
             try {
                 //构造完整URL

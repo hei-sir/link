@@ -65,7 +65,7 @@ public class Main3Activity extends AppCompatActivity {
         InfoAdapter adapter= new InfoAdapter(infoList) {
             @Override
             public int getItemCount() {
-                return 6;
+                return 7;
             }
         };
         recyclerView.setAdapter(adapter);
@@ -159,10 +159,12 @@ public class Main3Activity extends AppCompatActivity {
                     infoList.add(Name);
                 }
                 Info School = new Info("学校", cursor1.getString(cursor1.getColumnIndex("school")));
+                Info Phone = new Info("电话号码", cursor1.getString(cursor1.getColumnIndex("phone")));
                 Info Grade = new Info("年级", cursor1.getString(cursor1.getColumnIndex("grade")));
                 Info Class = new Info("班级", cursor1.getString(cursor1.getColumnIndex("clsses")));
                 Info Num = new Info("学号/工号", cursor1.getString(cursor1.getColumnIndex("number")));
                 infoList.add(User);
+                infoList.add(Phone);
                 infoList.add(School);
                 infoList.add(Grade);
                 infoList.add(Class);

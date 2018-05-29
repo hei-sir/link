@@ -33,7 +33,7 @@ public class Exam1tActivity extends AppCompatActivity {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private static boolean isExit = false;
     private SwipeRefreshLayout swipeRefresh;
-    private static String userName,ename,tname1,qsname1,qtname1;
+    private static String userName,school,grade,clsses;
     private int chinese, math, english, politics,physics, chemical, score;
     private String  examId,examId2, userId, name, rank,time;
     private ArrayList al;
@@ -69,7 +69,6 @@ public class Exam1tActivity extends AppCompatActivity {
         initExams();      //初始化信息栏
         recyclerView.setAdapter(adapter);
         ActionBar actionBar = getSupportActionBar();
-        navView.setCheckedItem(R.id.nav_info);
         swipeRefresh=(SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -141,20 +140,38 @@ public class Exam1tActivity extends AppCompatActivity {
                 String jsonString = HttpUtils.getJsonContent(path);//从网络获取数据
                 List<Exam> list = GsonTools.stringToList(jsonString, Exam.class);
 
-                for (Exam exam : list) {
-                    String lexamId;
-                    Cursor c = DataSupport.findBySQL("select * from Exam where userId = ? and examId=?", userName,exam.getExamId());        //搜索本地账户是否有数据
-                    KLog.d("进入问答循环：username=" + userName +"examId" +exam.getExamId());
-                    if (c.moveToFirst()==false) {
-                        //无值，可以新建成绩
-                        KLog.d("判断数据库无值");
-                        Exam exam1 = new Exam(exam.getChinese(), exam.getMath(), exam.getEnglish(), exam.getPolitics(), exam.getPhysics(), exam.getChemical(), exam.getScore(), exam.getExamId(), exam.getUserId(), exam.getName(), exam.getRank(), exam.getTime());
-                        KLog.d(exam.getExamId());
-                        exam1.save();
+                    Cursor cursor = DataSupport.findBySQL("select * from User where user = ?", userName);
+                    if (cursor.moveToFirst()) {
+                        cursor.moveToFirst();
+                        school = cursor.getString(cursor.getColumnIndex("school"));
+                        grade = cursor.getString(cursor.getColumnIndex("grade"));
+                        clsses = cursor.getString(cursor.getColumnIndex("clsses"));
                     }
-                    KLog.d("完成");
-                    c.close();
-                }//在此处输入操作
+                    cursor.close();
+                    Cursor cursor1 = DataSupport.findBySQL("select * from User where school = ? and grade = ? and clsses = ? and identity=?", school, grade, clsses, "学生");
+                    if (cursor1.moveToFirst()) {
+                        cursor1.moveToFirst();
+                        do {
+                            String user = cursor1.getString(cursor1.getColumnIndex("user"));
+                            for (Exam exam : list) {
+                                if (exam.getUserId().equals(user)) {
+                                    Cursor c = DataSupport.findBySQL("select * from Exam where userId = ? and examId=?", user, exam.getExamId());        //搜索本地账户是否有数据
+                                    KLog.d("进入问答循环：username=" + user + "examId" + exam.getExamId());
+                                    if (c.moveToFirst() == false) {
+                                        //无值，可以新建成绩
+                                        KLog.d(user + "判断数据库无值");
+                                        Exam exam1 = new Exam(exam.getChinese(), exam.getMath(), exam.getEnglish(), exam.getPolitics(), exam.getPhysics(), exam.getChemical(), exam.getScore(), exam.getExamId(), exam.getUserId(), exam.getName(), exam.getRank(), exam.getTime());
+                                        KLog.d(exam.getExamId());
+                                        exam1.save();
+                                    }
+                                    KLog.d(user + "判断数据库已存在");
+                                    c.close();
+                                }//在此处输入操作
+                            }
+                        } while (cursor1.moveToNext());
+                    }
+
+                    cursor1.close();
 
                 try{
                     Thread.sleep(2000);

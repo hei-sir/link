@@ -53,6 +53,7 @@ public abstract class Exam2tAdapter extends RecyclerView.Adapter<Exam2tAdapter.V
             public void onClick(View v) {
                 int position=holder.getAdapterPosition();
                 Exam exam=mExamList.get(position);
+//
 //                Intent intent=new Intent(mContext,Exam2tActivity.class);
 //                intent.putExtra(Exam2tActivity.EXAMEXAM,exam.getExamId());
 //                intent.putExtra(Exam2tActivity.EXAMCOUNT,String.valueOf(i));

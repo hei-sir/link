@@ -69,7 +69,6 @@ public class Exam1Activity extends AppCompatActivity {
         initExams();      //初始化信息栏
         recyclerView.setAdapter(adapter);
         ActionBar actionBar = getSupportActionBar();
-        navView.setCheckedItem(R.id.nav_info);
         swipeRefresh=(SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

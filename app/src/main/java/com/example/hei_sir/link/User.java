@@ -1,5 +1,6 @@
 package com.example.hei_sir.link;
 
+import org.litepal.annotation.Encrypt;
 import org.litepal.crud.DataSupport;
 
 /**
@@ -19,17 +20,11 @@ public class User extends DataSupport{
     public static String NOTICE="notice";
     public static String PHOTO="photo";
     public static String STATUS="status";
+    public static String PHONE="phone";
+
     private int id;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     private String user;
+    @Encrypt(algorithm = MD5)
     private String password;
     private String name;
     private String school;
@@ -39,6 +34,19 @@ public class User extends DataSupport{
     private String clsses;
     private String notice;
     private String photo;
+    private String phone;
+
+    public String getPhone() { return phone; }
+
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getPhoto(){return photo;}
 
