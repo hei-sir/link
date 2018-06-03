@@ -2,6 +2,7 @@ package com.example.hei_sir.link;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -22,6 +23,7 @@ import java.util.Random;
 public abstract class ContacttAdapter extends RecyclerView.Adapter<ContacttAdapter.ViewHolder> {
     private List<User> mUserList;
     private Context mContext;
+    private int red,green,blue;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         CardView cardView;
@@ -54,6 +56,9 @@ public abstract class ContacttAdapter extends RecyclerView.Adapter<ContacttAdapt
                 Intent intent=new Intent(mContext,Contact2Activity.class);
                 intent.putExtra(Contact2Activity.PHONE,user.getPhone());
                 intent.putExtra(Contact2Activity.NAME,user.getName());
+                intent.putExtra(Contact2Activity.RED,red);
+                intent.putExtra(Contact2Activity.GREEN,green);
+                intent.putExtra(Contact2Activity.BLUE,blue);
                 mContext.startActivity(intent);
             }
         });
@@ -63,14 +68,20 @@ public abstract class ContacttAdapter extends RecyclerView.Adapter<ContacttAdapt
     @Override
     public void onBindViewHolder(ViewHolder holder,int position){
         User user=mUserList.get(position);
-        holder.name.setText(user.getName());
+        Cursor cursor=DataSupport.findBySQL("select * from User where name = ? and phone = ?",user.getName(),user.getPhone());
+        cursor.moveToFirst();
+        if (cursor.getString(cursor.getColumnIndex("identity")).equals("学生")) {
+            holder.name.setText(user.getName() + "  的家长");
+        }else {
+            holder.name.setText(user.getName() + "  老师");
+        }
         holder.phone.setText(user.getPhone());
         Random x= new Random();
         Random y= new Random();
         Random z= new Random();
-        int red=x.nextInt(256);
-        int green=y.nextInt(256);
-        int blue=z.nextInt(256);
+        red=x.nextInt(256);
+        green=y.nextInt(256);
+        blue=z.nextInt(256);
         holder.phonename.setBackgroundColor(Color.rgb(red,green,blue));
     }
 

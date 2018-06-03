@@ -3,6 +3,7 @@ package com.example.hei_sir.link;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
@@ -24,10 +25,13 @@ import com.bumptech.glide.Glide;
 public class Contact2Activity extends AppCompatActivity implements View.OnClickListener {
     public static final String PHONE="phone";
     public static final String NAME="name";
+    public static final String RED="red";
+    public static final String GREEN="green";
+    public static final String BLUE="blue";
     private ImageView imageView;
     private TextView phone1;
     private CardView call,msn;
-    private static String name,phone;
+    private static String name,phone,red,green,blue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,9 @@ public class Contact2Activity extends AppCompatActivity implements View.OnClickL
         Intent intent=getIntent();
         phone=intent.getStringExtra(PHONE);
         name=intent.getStringExtra(NAME);
+        red=intent.getStringExtra(RED);
+        green=intent.getStringExtra(GREEN);
+        blue=intent.getStringExtra(BLUE);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout=(CollapsingToolbarLayout)findViewById(R.id.collapsing_tollbar);
         phone1=(TextView)findViewById(R.id.phone1);
@@ -44,14 +51,15 @@ public class Contact2Activity extends AppCompatActivity implements View.OnClickL
         msn.setOnClickListener(this);
         call.setOnClickListener(this);
         imageView=(ImageView)findViewById(R.id.image_view);
-        phone1.setText(phone);
+        phone1.setText(phone+"的家长");
         setSupportActionBar(toolbar);
         ActionBar actionBar=getSupportActionBar();
         if(actionBar !=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         collapsingToolbarLayout.setTitle(name);
-        Glide.with(this).load(R.drawable.exam).into(imageView);
+//        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.rgb(Integer.parseInt(red),Integer.parseInt(green),Integer.parseInt(blue)));
+        //Glide.with(this).load(R.drawable.exam).into(imageView);
     }
 
     @Override

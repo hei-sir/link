@@ -100,7 +100,8 @@
             android:name=".Exam2tActivity"
             android:theme="@style/ExamActivityTheme" />
         <activity android:name=".ContacttActivity" />
-        <activity android:name=".Contact2Activity" />
+        <activity android:name=".Contact2Activity"
+            android:theme="@style/ExamActivityTheme"/>
         <activity android:name=".ExamAddActivity"></activity>
     </application>
 

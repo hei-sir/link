@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         intent1.putExtra("extra_data",userName);
                         startActivity(intent1);
                     }else {
-                        Toast.makeText(this,"您所在班级目前没有学生注册",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this,"您所在班级目前没有家长注册",Toast.LENGTH_SHORT).show();
                     }
                     cursor2.close();
                 } else {
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             intent1.putExtra("extra_data",userName);
                             startActivity(intent1);
                         }else {
-                            Toast.makeText(this,"您所在班级目前没有学生注册",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this,"您所在班级目前没有家长注册",Toast.LENGTH_SHORT).show();
                         }
                         cursor2.close();
                     } else {
